@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Admin | ONG" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable tailwind %>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-50 text-gray-900 font-sans antialiased h-screen flex overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 text-white flex flex-col hidden md:flex">
+      <div class="p-4 border-b border-gray-800 flex items-center justify-center">
+        <h1 class="text-xl font-bold uppercase tracking-widest text-yellow-500">ONG Admin</h1>
+      </div>
+      <nav class="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
+        <a href="/admin" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md bg-gray-800 text-white border-l-4 border-yellow-500">
+          Dashboard
+        </a>
+        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Pessoas</a>
+        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Animais</a>
+        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Adoções</a>
+        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Lar Temporário</a>
+        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Voluntários</a>
+        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Documentos</a>
+        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white mt-8">Configurações</a>
+      </nav>
+    </aside>
+
+    <!-- Main wrapper -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <!-- Header -->
+      <header class="bg-white px-6 py-4 border-b border-gray-200 flex items-center justify-between shadow-sm z-10">
+        <div class="flex items-center">
+          <h2 class="text-lg font-semibold text-gray-800"><%= yield :page_title %></h2>
+        </div>
+        <div class="flex items-center space-x-4">
+          <span class="text-sm font-medium text-gray-500"><%= current_user&.name || 'Usuário' %></span>
+          <div class="h-8 w-8 rounded-full bg-yellow-500 flex items-center justify-center text-gray-900 font-bold">
+            <%= current_user&.name&.first&.upcase || 'U' %>
+          </div>
+          <%= button_to "Sair", admin_logout_path, method: :delete, class: "ml-4 text-sm font-medium text-red-600 hover:text-red-800 transition-colors" %>
+        </div>
+      </header>
+
+      <!-- Main content -->
+      <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+        <% if flash[:notice] %>
+          <div class="mb-4 bg-green-50 border-l-4 border-green-400 p-4 rounded-md">
+            <p class="text-sm text-green-700"><%= flash[:notice] %></p>
+          </div>
+        <% end %>
+        <% if flash[:alert] %>
+          <div class="mb-4 bg-red-50 border-l-4 border-red-400 p-4 rounded-md">
+            <p class="text-sm text-red-700"><%= flash[:alert] %></p>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </main>
+    </div>
+  </body>
+</html>

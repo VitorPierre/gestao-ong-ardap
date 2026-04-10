@@ -1,0 +1,44 @@
+<% content_for :page_title, "Dashboard" %>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+  <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100 border-l-4 border-l-yellow-500">
+    <h3 class="text-gray-500 text-sm font-medium">Animais em Lar Temporário</h3>
+    <p class="text-3xl font-bold text-gray-800 mt-2">15</p>
+  </div>
+  <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+    <h3 class="text-gray-500 text-sm font-medium">Animais para Adoção Imediata</h3>
+    <p class="text-3xl font-bold text-gray-800 mt-2">8</p>
+  </div>
+  <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+    <h3 class="text-gray-500 text-sm font-medium">Adoções no Mês</h3>
+    <p class="text-3xl font-bold text-gray-800 mt-2">4</p>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200">
+    <div class="p-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800">Atenção Imediata</h3>
+    </div>
+    <div class="p-4 text-center text-gray-500 py-12">
+      <p>Nenhuma pendência crítica encontrada hoje.</p>
+      <button class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-4 rounded-md">Ver todos os registros</button>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div class="p-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800">Últimas Operações</h3>
+    </div>
+    <ul class="divide-y divide-gray-100">
+      <li class="p-4 flex flex-col">
+        <span class="text-sm font-medium text-gray-800">Luna foi adotada</span>
+        <span class="text-xs text-gray-500 mt-1">Há 1h</span>
+      </li>
+      <li class="p-4 flex flex-col">
+        <span class="text-sm font-medium text-gray-800">Max entrou em lar temporário</span>
+        <span class="text-xs text-gray-500 mt-1">Ontem</span>
+      </li>
+    </ul>
+  </div>
+</div>
