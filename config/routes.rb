@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   # Namespace administrativo
   namespace :admin do
+    resources :documents
     root "dashboard#index"
 
     get "login", to: "sessions#new"
@@ -17,6 +18,9 @@ Rails.application.routes.draw do
     resources :adoptions
     resources :foster_cares
     resources :volunteers
+    
+    resources :documents
+    resources :document_links, only: [:create, :destroy]
   end
 
   # Rotas futuras para cadastro: resources :people, :animals, etc. estarão dentro de admin

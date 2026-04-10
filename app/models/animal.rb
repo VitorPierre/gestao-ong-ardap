@@ -8,4 +8,7 @@ class Animal < ApplicationRecord
 
   has_many :adoptions
   has_many :foster_cares
+
+  has_many :document_links, as: :documentable, dependent: :destroy
+  has_many :documents, through: :document_links
 end
