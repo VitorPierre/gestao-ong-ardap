@@ -27,11 +27,21 @@
         <a href="/admin" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md bg-gray-800 text-white border-l-4 border-yellow-500">
           Dashboard
         </a>
-        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Pessoas</a>
-        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Animais</a>
-        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Adoções</a>
-        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Lar Temporário</a>
-        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Voluntários</a>
+        <%= link_to admin_people_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" do %>
+          Pessoas
+        <% end %>
+        <%= link_to admin_animals_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" do %>
+          Animais
+        <% end %>
+        <%= link_to admin_adoptions_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" do %>
+          Adoções
+        <% end %>
+        <%= link_to admin_foster_cares_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" do %>
+          Lar Temporário
+        <% end %>
+        <%= link_to admin_volunteers_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" do %>
+          Voluntários
+        <% end %>
         <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">Documentos</a>
         <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white mt-8">Configurações</a>
       </nav>

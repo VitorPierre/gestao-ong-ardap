@@ -11,6 +11,12 @@ Rails.application.routes.draw do
     get "login", to: "sessions#new"
     post "login", to: "sessions#create"
     delete "logout", to: "sessions#destroy"
+
+    resources :people
+    resources :animals
+    resources :adoptions
+    resources :foster_cares
+    resources :volunteers
   end
 
   # Rotas futuras para cadastro: resources :people, :animals, etc. estarão dentro de admin
