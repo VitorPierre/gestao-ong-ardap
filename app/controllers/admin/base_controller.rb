@@ -4,11 +4,13 @@ module Admin
     before_action :authenticate_user!
     before_action :require_operator_for_writes!
 
-    after_action :audit_standard_event, only: %i[create update destroy]
+    after_action :audit_standard_event
 
     private
 
     def audit_standard_event
+      return unless %w[create update destroy].include?(action_name)
+      
       # Audita apenas se a requisição não falhou com erro de formulário visando sucesso na operação.
       # Exclui UsersController das standard actions, pois a auditoria do modulo de equipe fará manual.
       return unless (response.redirect? || response.successful?) && controller_name != 'users'
