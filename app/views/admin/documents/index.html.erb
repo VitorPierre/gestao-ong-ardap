@@ -1,29 +1,106 @@
-<% content_for :title, "Documents" %>
+<% content_for :page_title, "Repositório de Documentos" %>
 
-<div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Documents</h1>
-    <%= link_to "New document", new_admin_document_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+<div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
+  <div>
+    <h1 class="text-2xl font-black text-gray-900">Documentos e Contratos</h1>
+    <p class="text-sm text-gray-500 mt-1">Organização, geração e assinatura digital da ONG</p>
   </div>
+  <% if can_write? %>
+  <%= link_to "+ Novo Documento", new_admin_document_path, class: "bg-gray-900 hover:bg-gray-800 text-white font-bold py-2.5 px-5 rounded-md shadow transition" %>
+<% end %>
+</div>
 
-  <div id="documents" class="min-w-full divide-y divide-gray-200 space-y-5">
-    <% if @documents.any? %>
-      <% @documents.each do |document| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render document %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", [:admin, document], class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_admin_document_path(document), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", [:admin, document], method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
-          </div>
+<div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-8">
+  <%= form_with url: admin_documents_path, method: :get, local: true, class: "flex items-end gap-3 flex-wrap" do |f| %>
+    <div>
+      <%= f.label :category, "Categoria", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.select :category, Document.categories.keys.map { |c| [c.humanize, c] }, { include_blank: "Todas", selected: params[:category] }, class: "rounded border-gray-300 shadow-sm py-2 px-3 text-sm min-w-[140px]" %>
+    </div>
+    <div>
+      <%= f.label :type, "Tipo do Doc.", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.select :type, Document.document_types.keys.map { |t| [t.humanize, t] }, { include_blank: "Todos", selected: params[:type] }, class: "rounded border-gray-300 shadow-sm py-2 px-3 text-sm min-w-[140px]" %>
+    </div>
+    <div>
+      <%= f.label :status, "Status", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.select :status, Document.statuses.keys.map { |s| [s.humanize, s] }, { include_blank: "Todos", selected: params[:status] }, class: "rounded border-gray-300 shadow-sm py-2 px-3 text-sm min-w-[140px]" %>
+    </div>
+    <div class="flex gap-2">
+      <%= f.submit "Filtrar", class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-medium py-2 px-4 rounded shadow-sm text-sm cursor-pointer" %>
+      <%= link_to "Limpar", admin_documents_path, class: "bg-white hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded border border-gray-300 shadow-sm text-sm" %>
+    </div>
+  <% end %>
+</div>
+
+<% if @grouped_documents.empty? %>
+  <div class="bg-white rounded-lg border border-dashed border-gray-300 p-12 text-center">
+    <p class="text-gray-500 text-lg">Nenhum documento encontrado.</p>
+  </div>
+<% else %>
+  <div class="space-y-8">
+    <% @grouped_documents.each do |category, documents| %>
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-gray-50 border-b border-gray-200 p-3 flex justify-between items-center">
+          <h2 class="font-bold text-gray-800 uppercase tracking-wider text-sm flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-gray-400"></span> 
+            <%= category ? category.humanize : "Sem Categoria (Upload Legado)" %>
+          </h2>
+          <span class="text-xs text-gray-500 font-medium"><%= pluralize(documents.count, 'arquivo', 'arquivos') %></span>
         </div>
-      <% end %>
-    <% else %>
-      <p class="text-center my-10">No documents found.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-white">
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Documento / Tipo</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Processo Vinculado</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Status</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Atualizado</th>
+                <th class="px-4 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <% documents.each do |doc| %>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3">
+                    <p class="text-sm font-bold text-gray-900"><%= doc.title %></p>
+                    <% if doc.document_type.present? %>
+                      <p class="text-[10px] uppercase font-bold tracking-wide text-blue-600 mt-1"><%= doc.document_type.humanize %></p>
+                    <% else %>
+                      <p class="text-[10px] uppercase font-bold tracking-wide text-gray-400 mt-1">Anexo Externo</p>
+                    <% end %>
+                  </td>
+                  
+                  <td class="px-4 py-3 text-sm text-gray-600">
+                    <% if doc.linked.present? %>
+                      <span class="px-2 py-0.5 bg-gray-100 border rounded text-xs"><%= doc.linked_type %> #<%= doc.linked_id %></span>
+                    <% else %>
+                      <span class="text-gray-400 italic">Avulso</span>
+                    <% end %>
+                  </td>
+                  
+                  <td class="px-4 py-3">
+                    <% status_color = doc.signed? ? 'bg-green-100 text-green-800' : (doc.draft? ? 'bg-gray-100 text-gray-800' : 'bg-yellow-100 text-yellow-800') %>
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold <%= status_color %>">
+                      <%= doc.signed? ? "✓ " : "" %><%= doc.status.humanize %>
+                      <% if doc.is_locked? %>
+                        <span class="ml-1 text-[10px]">🔒</span>
+                      <% end %>
+                    </span>
+                  </td>
+                  
+                  <td class="px-4 py-3 text-sm text-gray-500">
+                    <%= doc.signed_at.present? ? doc.signed_at.strftime("%d/%m/%Y") : doc.updated_at.strftime("%d/%m/%Y") %>
+                  </td>
+                  
+                  <td class="px-4 py-3 text-right text-sm">
+                    <%= link_to "Visualizar", admin_document_path(doc), class: "text-blue-600 hover:text-blue-800 font-medium" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
     <% end %>
   </div>
-</div>
+<% end %>

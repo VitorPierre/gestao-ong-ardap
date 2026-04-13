@@ -1,0 +1,53 @@
+<% input_class = "block w-full rounded-md border border-gray-300 px-3 py-2 mt-1 shadow-sm text-sm focus:border-yellow-500 focus:outline-none" %>
+<% label_class = "block text-sm font-medium text-gray-700 mt-5" %>
+
+<%= form_with(model: [:admin, (@animal if @medication_record.new_record?), @medication_record].compact, class: "bg-white p-6 rounded-lg shadow border border-gray-200") do |form| %>
+  <% if @medication_record.errors.any? %>
+    <div class="bg-red-50 text-red-700 px-4 py-3 rounded-md mb-5 border-l-4 border-red-500">
+      <ul class="list-disc ml-5 text-sm">
+        <% @medication_record.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+    <div>
+      <%= form.label :medication_name, "Nome do Medicamento", class: label_class %>
+      <%= form.text_field :medication_name, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :dosage, "Dosagem", class: label_class %>
+      <%= form.text_field :dosage, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :frequency, "Frequência", class: label_class %>
+      <%= form.text_field :frequency, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :status, "Status", class: label_class %>
+      <%= form.select :status,
+          [["Em Uso", "in_use"], ["Concluído", "completed"], ["Suspenso", "suspended"]],
+          {}, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :start_date, "Início do Uso", class: label_class %>
+      <%= form.date_field :start_date, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :end_date, "Término do Uso (Opcional)", class: label_class %>
+      <%= form.date_field :end_date, class: input_class %>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <%= form.label :notes, "Observações", class: label_class %>
+    <%= form.text_area :notes, rows: 2, class: input_class %>
+  </div>
+
+  <div class="mt-6 flex items-center gap-4">
+    <%= form.submit "Salvar", class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2.5 px-5 rounded-md shadow transition cursor-pointer" %>
+    <%= link_to "Cancelar", admin_animal_path(@animal || @medication_record.animal, tab: 'medication'), class: "text-sm text-gray-500 hover:text-gray-700" %>
+  </div>
+<% end %>

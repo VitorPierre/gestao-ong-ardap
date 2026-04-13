@@ -1,0 +1,6 @@
+partner_one:
+  name: PetShop XYZ
+  status: 0 # active
+  partnership_type: 0 # financeiro
+  document: "12.345.678/0001-99"
+  email: "contato@petxyz.com"

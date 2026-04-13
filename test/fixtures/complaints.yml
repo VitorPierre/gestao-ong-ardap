@@ -1,0 +1,8 @@
+complaint_one:
+  protocol_number: "DEN-2026-FIX1"
+  description: "Cachorro preso na varanda sem água."
+  status: 0 
+  priority: 1 
+  category: 0
+  anonymous: true
+  received_at: <%= Time.current %>

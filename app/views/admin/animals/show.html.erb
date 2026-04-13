@@ -9,6 +9,222 @@
 
   <%= render @animal %>
 
+  <%# ── MÓDULO DE SAÚDE ANIMAL (TABS) ── %>
+  <div class="mt-8 mb-4 border-t pt-6">
+    <h3 class="text-2xl font-bold mb-4">Saúde Animal</h3>
+    
+    <div class="flex border-b mb-4 overflow-x-auto whitespace-nowrap">
+      <button class="py-2 px-4 border-b-2 font-medium border-yellow-500 text-gray-900" onclick="showTab('consultations')" id="tab-consultations">Atendimentos</button>
+      <button class="py-2 px-4 border-b-2 font-medium border-transparent text-gray-500 hover:text-gray-700" onclick="showTab('vaccines')" id="tab-vaccines">Vacinas</button>
+      <button class="py-2 px-4 border-b-2 font-medium border-transparent text-gray-500 hover:text-gray-700" onclick="showTab('deworming')" id="tab-deworming">Vermifugação</button>
+      <button class="py-2 px-4 border-b-2 font-medium border-transparent text-gray-500 hover:text-gray-700" onclick="showTab('medication')" id="tab-medication">Medicamentos</button>
+      <button class="py-2 px-4 border-b-2 font-medium border-transparent text-gray-500 hover:text-gray-700" onclick="showTab('weight')" id="tab-weight">Peso</button>
+    </div>
+
+    <!-- Atendimentos -->
+    <div id="content-consultations" class="health-tab-content">
+      <div class="flex justify-end mb-4">
+        <% if can_write? %>
+  <%= link_to "+ Novo Atendimento", new_admin_animal_health_record_path(@animal), class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-medium py-1.5 px-3 rounded-md text-sm" %>
+<% end %>
+      </div>
+      <% if @animal.health_records.any? %>
+        <div class="space-y-3">
+          <% @animal.health_records.order(occurred_at: :desc).each do |hr| %>
+            <div class="bg-white p-4 border rounded shadow-sm flex items-center justify-between">
+              <div>
+                <span class="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full mr-2"><%= hr.record_type.humanize %></span>
+                <span class="text-sm font-semibold text-gray-900"><%= l(hr.occurred_at) rescue hr.occurred_at %></span>
+                <p class="text-xs text-gray-500 mt-1"><%= hr.vet_name.presence || hr.description.truncate(80) %></p>
+              </div>
+              <div class="flex gap-2 text-sm">
+                <% if can_write? %><%= link_to "Editar", edit_admin_health_record_path(hr), class: "text-blue-600 hover:underline" %><% end %>
+                <% if can_write? %>
+  <%= button_to "X", admin_health_record_path(hr), method: :delete, class: "text-red-600 hover:underline cursor-pointer", form: { class: 'inline-block' }, data: { turbo_confirm: 'Certeza?' } %>
+<% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 italic p-4 text-center border-2 border-dashed rounded-md">Nenhum atendimento registrado.</p>
+      <% end %>
+    </div>
+
+    <!-- Vacinas -->
+    <div id="content-vaccines" class="health-tab-content hidden">
+      <div class="flex justify-end mb-4">
+        <% if can_write? %>
+  <%= link_to "+ Nova Vacina", new_admin_animal_vaccination_record_path(@animal), class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-medium py-1.5 px-3 rounded-md text-sm" %>
+<% end %>
+      </div>
+      <% if @animal.vaccination_records.any? %>
+        <div class="space-y-3">
+          <% @animal.vaccination_records.order(administered_at: :desc).each do |vr| %>
+            <div class="bg-white p-4 border rounded shadow-sm flex items-center justify-between">
+              <div>
+                <span class="text-sm font-semibold text-gray-900"><%= vr.vaccine_name %></span>
+                <p class="text-xs text-gray-500 mt-1">Aplicada em: <%= l(vr.administered_at) rescue vr.administered_at %> <%= " | Próxima: #{l(vr.next_due_at) rescue vr.next_due_at}" if vr.next_due_at %></p>
+              </div>
+              <div class="flex gap-2 text-sm">
+                <% if can_write? %><%= link_to "Editar", edit_admin_vaccination_record_path(vr), class: "text-blue-600 hover:underline" %><% end %>
+                <% if can_write? %>
+  <%= button_to "X", admin_vaccination_record_path(vr), method: :delete, class: "text-red-600 hover:underline cursor-pointer", form: { class: 'inline-block' } %>
+<% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 italic p-4 text-center border-2 border-dashed rounded-md">Nenhuma vacina registrada.</p>
+      <% end %>
+    </div>
+
+    <!-- Vermífugos -->
+    <div id="content-deworming" class="health-tab-content hidden">
+      <div class="flex justify-end mb-4">
+        <% if can_write? %>
+  <%= link_to "+ Novo Vermífugo", new_admin_animal_deworming_record_path(@animal), class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-medium py-1.5 px-3 rounded-md text-sm" %>
+<% end %>
+      </div>
+      <% if @animal.deworming_records.any? %>
+        <div class="space-y-3">
+          <% @animal.deworming_records.order(administered_at: :desc).each do |dr| %>
+            <div class="bg-white p-4 border rounded shadow-sm flex items-center justify-between">
+              <div>
+                <span class="text-sm font-semibold text-gray-900"><%= dr.product_name %></span>
+                <p class="text-xs text-gray-500 mt-1">Aplicado em: <%= l(dr.administered_at) rescue dr.administered_at %> <%= " | Reforço: #{l(dr.next_due_at) rescue dr.next_due_at}" if dr.next_due_at %></p>
+              </div>
+              <div class="flex gap-2 text-sm">
+                <% if can_write? %><%= link_to "Editar", edit_admin_deworming_record_path(dr), class: "text-blue-600 hover:underline" %><% end %>
+                <% if can_write? %>
+  <%= button_to "X", admin_deworming_record_path(dr), method: :delete, class: "text-red-600 hover:underline cursor-pointer", form: { class: 'inline-block' } %>
+<% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 italic p-4 text-center border-2 border-dashed rounded-md">Nenhum vermífugo registrado.</p>
+      <% end %>
+    </div>
+
+    <!-- Medicamentos -->
+    <div id="content-medication" class="health-tab-content hidden">
+      <div class="flex justify-end mb-4">
+        <% if can_write? %>
+  <%= link_to "+ Novo Medicamento", new_admin_animal_medication_record_path(@animal), class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-medium py-1.5 px-3 rounded-md text-sm" %>
+<% end %>
+      </div>
+      <% if @animal.medication_records.any? %>
+        <div class="space-y-3">
+          <% @animal.medication_records.order(start_date: :desc).each do |mr| %>
+            <div class="bg-white p-4 border rounded shadow-sm flex items-center justify-between">
+              <div>
+                <span class="inline-block px-2 py-0.5 rounded-full text-xs mr-2 <%= mr.in_use? ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600' %>"><%= mr.status.humanize %></span>
+                <span class="text-sm font-semibold text-gray-900"><%= mr.medication_name %></span>
+                <p class="text-xs text-gray-500 mt-1"><%= mr.dosage %> - <%= mr.frequency %> (Desde: <%= l(mr.start_date) rescue mr.start_date %>)</p>
+              </div>
+              <div class="flex gap-2 text-sm">
+                <% if can_write? %><%= link_to "Editar", edit_admin_medication_record_path(mr), class: "text-blue-600 hover:underline" %><% end %>
+                <% if can_write? %>
+  <%= button_to "X", admin_medication_record_path(mr), method: :delete, class: "text-red-600 hover:underline cursor-pointer", form: { class: 'inline-block' } %>
+<% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 italic p-4 text-center border-2 border-dashed rounded-md">Nenhum medicamento registrado.</p>
+      <% end %>
+    </div>
+
+    <!-- Peso -->
+    <div id="content-weight" class="health-tab-content hidden">
+      <div class="flex justify-end mb-4">
+        <% if can_write? %>
+  <%= link_to "+ Novo Peso", new_admin_animal_weight_record_path(@animal), class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-medium py-1.5 px-3 rounded-md text-sm" %>
+<% end %>
+      </div>
+      <% if @animal.weight_records.any? %>
+        <div class="space-y-3">
+          <% @animal.weight_records.order(measured_at: :desc).each do |wr| %>
+            <div class="bg-white p-4 border rounded shadow-sm flex items-center justify-between">
+              <div>
+                <span class="text-lg font-bold text-gray-900"><%= wr.weight %> kg</span>
+                <span class="text-xs text-gray-500 ml-2">em <%= l(wr.measured_at) rescue wr.measured_at %></span>
+              </div>
+              <div class="flex gap-2 text-sm">
+                <% if can_write? %><%= link_to "Editar", edit_admin_weight_record_path(wr), class: "text-blue-600 hover:underline" %><% end %>
+                <% if can_write? %>
+  <%= button_to "X", admin_weight_record_path(wr), method: :delete, class: "text-red-600 hover:underline cursor-pointer", form: { class: 'inline-block' } %>
+<% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 italic p-4 text-center border-2 border-dashed rounded-md">Nenhuma aferição de peso registrada.</p>
+      <% end %>
+    </div>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.health-tab-content').forEach(function(el) { el.classList.add('hidden'); });
+      document.querySelectorAll('[id^="tab-"]').forEach(function(el) { 
+        el.classList.remove('border-yellow-500', 'text-gray-900'); 
+        el.classList.add('text-gray-500', 'border-transparent'); 
+      });
+      
+      var content = document.getElementById('content-'+tabId);
+      var tab = document.getElementById('tab-'+tabId);
+      
+      if(content && tab) {
+        content.classList.remove('hidden');
+        tab.classList.remove('text-gray-500', 'border-transparent');
+        tab.classList.add('border-yellow-500', 'text-gray-900');
+      }
+    }
+    
+    document.addEventListener("turbo:load", function() {
+      var params = new URLSearchParams(window.location.search);
+      var tab = params.get('tab') || 'consultations';
+      showTab(tab);
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+      var params = new URLSearchParams(window.location.search);
+      var tab = params.get('tab') || 'consultations';
+      showTab(tab);
+    });
+  </script>
+
+  <%# ── Denúncias Relacionadas ── %>
+  <div class="mt-8 mb-4 border-t pt-6">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-2xl font-bold">Denúncias Relacionadas</h3>
+      <% if can_write? %>
+  <%= link_to "+ Nova Denúncia", new_admin_complaint_path(animal_id: @animal.id), class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-medium py-1.5 px-3 rounded-md text-sm" %>
+<% end %>
+    </div>
+    <% if @animal.complaints.any? %>
+      <div class="space-y-3 mb-6">
+        <% @animal.complaints.order(received_at: :desc).limit(5).each do |complaint| %>
+          <div class="bg-white p-4 border rounded shadow-sm flex items-center justify-between">
+            <div>
+              <span class="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full mr-2"><%= complaint.category.humanize %></span>
+              <span class="text-sm font-semibold text-gray-900"><%= complaint.protocol_number %> - <%= complaint.received_at.strftime("%d/%m/%Y") %></span>
+              <p class="text-xs text-gray-500 mt-1">Status: <%= complaint.status.humanize %> <%= "⚠️ (#{complaint.priority.humanize})" if complaint.urgent? || complaint.critical? %></p>
+            </div>
+            <%= link_to "Ver", admin_complaint_path(complaint), class: "text-blue-600 hover:underline text-sm" %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500 italic mb-6">Nenhuma denúncia vinculada a este animal.</p>
+    <% end %>
+  </div>
+
   <div class="mt-8 mb-4 border-t pt-6">
     <h3 class="text-2xl font-bold mb-4">Documentos Vinculados</h3>
     
@@ -47,6 +263,8 @@
   <div class="mt-8 flex items-center gap-2">
     <%= link_to "Edit this animal", edit_admin_animal_path(@animal), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
     <%= link_to "Back to animals", admin_animals_path, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-    <%= button_to "Destroy this animal", [:admin, @animal], method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+    <% if can_write? %>
+  <%= button_to "Destroy this animal", [:admin, @animal], method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+<% end %>
   </div>
 </div>

@@ -1,0 +1,90 @@
+<% input_class = "block w-full rounded-md border border-gray-300 px-3 py-2 mt-1 shadow-sm text-sm focus:border-yellow-500 focus:outline-none" %>
+<% label_class = "block text-sm font-medium text-gray-700 mt-4" %>
+
+<%= form_with(model: [:admin, partner], class: "bg-white p-6 rounded-lg shadow border border-gray-200") do |form| %>
+  <% if partner.errors.any? %>
+    <div class="bg-red-50 text-red-700 px-4 py-3 rounded-md mb-5 border-l-4 border-red-500">
+      <ul class="list-disc ml-5 text-sm">
+        <% partner.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+    <div>
+      <%= form.label :name, "Razão Social ou Nome Fantasia", class: label_class %>
+      <%= form.text_field :name, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :document, "CNPJ / CPF", class: label_class %>
+      <%= form.text_field :document, class: input_class %>
+    </div>
+
+    <div>
+      <%= form.label :partnership_type, "Natureza da Parceria", class: label_class %>
+      <%= form.select :partnership_type, Partner.partnership_types.keys.map { |t| [t.humanize, t] }, {}, class: input_class %>
+    </div>
+    
+    <div>
+      <%= form.label :status, "Status Operacional", class: label_class %>
+      <%= form.select :status, Partner.statuses.keys.map { |s| [s.humanize, s] }, {}, class: input_class %>
+    </div>
+
+    <div class="md:col-span-2 border-t mt-4 pt-2">
+      <h4 class="font-bold text-gray-800 text-sm">Contatos</h4>
+    </div>
+
+    <div>
+      <%= form.label :contact_name, "Nome do Responsável / Contato", class: label_class %>
+      <%= form.text_field :contact_name, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :phone, "Telefone Institucional", class: label_class %>
+      <%= form.text_field :phone, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :email, "E-mail de Contato", class: label_class %>
+      <%= form.text_field :email, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :website, "Website Oficial", class: label_class %>
+      <%= form.text_field :website, class: input_class %>
+    </div>
+
+    <!-- Seção: Localização -->
+    <div class="md:col-span-2 border-t mt-4 pt-2">
+      <h4 class="font-bold text-gray-800 text-sm">Localização Regional</h4>
+    </div>
+    
+    <div class="md:col-span-2">
+      <%= form.label :address, "Endereço Institucional", class: label_class %>
+      <%= form.text_field :address, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :city, "Cidade", class: label_class %>
+      <%= form.text_field :city, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :state, "Estado (UF)", class: label_class %>
+      <%= form.text_field :state, class: input_class %>
+    </div>
+
+    <div class="md:col-span-2 border-t mt-4 pt-2"></div>
+
+    <div>
+      <%= form.label :started_at, "Iniciou Parceria em", class: label_class %>
+      <%= form.date_field :started_at, class: input_class %>
+    </div>
+    <div class="md:col-span-2">
+      <%= form.label :notes, "Notas Internas Sobre o Acordo", class: label_class %>
+      <%= form.text_area :notes, rows: 3, class: input_class %>
+    </div>
+  </div>
+
+  <div class="mt-8 flex items-center gap-4 border-t pt-5">
+    <%= form.submit "Salvar Parceiro", class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2.5 px-6 rounded-md shadow transition cursor-pointer" %>
+    <%= link_to "Cancelar", partner.new_record? ? admin_partners_path : admin_partner_path(partner), class: "text-sm text-gray-500 hover:text-gray-700" %>
+  </div>
+<% end %>

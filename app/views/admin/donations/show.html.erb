@@ -1,0 +1,89 @@
+<% content_for :page_title, "Recibo de Doação" %>
+
+<div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+  <div>
+    <h1 class="text-3xl font-black text-gray-900">Recibo / Doação #<%= @donation.id.to_s.rjust(5, '0') %></h1>
+    <p class="text-sm text-gray-500 mt-1">Registrado em <%= l(@donation.created_at, format: :short) %></p>
+  </div>
+  
+  <div class="flex items-center gap-3">
+    <%= link_to "← Voltar para Lista", admin_donations_path, class: "text-gray-600 hover:text-gray-900 font-medium text-sm" %>
+    <%= link_to "Editar Registro", edit_admin_donation_path(@donation), class: "bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded font-medium shadow-sm" %>
+  </div>
+</div>
+
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden max-w-4xl">
+  <!-- Cabeçalho do Recibo -->
+  <div class="bg-gray-50 border-b border-gray-200 p-6 flex justify-between items-center">
+    <div>
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase mb-3 
+        <%= @donation.financial? ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800' %>">
+        <%= @donation.donation_type.humanize %>
+      </span>
+      <% if @donation.recurrent? %>
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase mb-3 ml-2 bg-blue-100 text-blue-800">
+          Recorrente (<%= @donation.recurrence_interval.humanize %>)
+        </span>
+      <% end %>
+      <h2 class="text-2xl font-bold text-gray-800">
+        <%= @donation.financial? ? number_to_currency(@donation.amount, unit: "R$", separator: ",", delimiter: ".") : "Doação em Espécie" %>
+      </h2>
+    </div>
+    <div class="text-right">
+      <p class="text-sm text-gray-500 font-medium uppercase tracking-wide">Status</p>
+      <% dot_color = @donation.confirmed? ? 'text-green-500' : (@donation.canceled? ? 'text-red-500' : 'text-yellow-500') %>
+      <p class="text-xl font-bold flex items-center justify-end gap-2 <%= dot_color %>">
+        ● <%= @donation.status.humanize %>
+      </p>
+    </div>
+  </div>
+
+  <!-- Corpo do Recibo -->
+  <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+    
+    <div>
+      <h4 class="text-xs font-bold uppercase text-gray-500 tracking-wider mb-2 border-b pb-1">Doador / Origem</h4>
+      <% if @donation.partner %>
+        <p class="font-bold text-gray-900 text-lg"><%= @donation.partner.name %></p>
+        <p class="text-sm text-gray-600">Parceiro Institucional (CNPJ/CPF: <%= @donation.partner.document.presence || "N/A" %>)</p>
+        <%= link_to "Ver Perfil →", admin_partner_path(@donation.partner), class: "text-sm text-blue-600 hover:underline mt-1 inline-block" %>
+      <% elsif @donation.person %>
+        <p class="font-bold text-gray-900 text-lg"><%= @donation.person.name %></p>
+        <p class="text-sm text-gray-600">Pessoa Física (E-mail: <%= @donation.person.email.presence || "N/A" %>)</p>
+        <%= link_to "Ver Perfil →", admin_person_path(@donation.person), class: "text-sm text-blue-600 hover:underline mt-1 inline-block" %>
+      <% else %>
+        <p class="font-bold text-gray-500 text-lg italic">Doador Anônimo</p>
+        <p class="text-sm text-gray-500">Nenhum vínculo de parceiro ou pessoa cadastrado.</p>
+      <% end %>
+    </div>
+
+    <div>
+      <h4 class="text-xs font-bold uppercase text-gray-500 tracking-wider mb-2 border-b pb-1">Detalhes da Transação</h4>
+      <dl class="grid grid-cols-2 gap-y-3">
+        <dt class="text-sm text-gray-500">Data Base:</dt>
+        <dd class="text-sm font-medium text-gray-900"><%= l(@donation.donated_at) rescue @donation.donated_at %></dd>
+        
+        <dt class="text-sm text-gray-500">Meio de Pgto:</dt>
+        <dd class="text-sm font-medium text-gray-900"><%= @donation.payment_method.humanize %></dd>
+        
+        <dt class="text-sm text-gray-500">Nº Recibo:</dt>
+        <dd class="text-sm font-medium text-gray-900"><%= @donation.receipt_number.presence || "—" %></dd>
+      </dl>
+    </div>
+
+    <% if @donation.description.present? %>
+      <div class="md:col-span-2 mt-2">
+         <h4 class="text-xs font-bold uppercase text-gray-500 tracking-wider mb-2 border-b pb-1">Descrição / Insumos Arrecadados</h4>
+         <p class="text-gray-800 text-sm"><%= @donation.description %></p>
+      </div>
+    <% end %>
+
+    <% if @donation.notes.present? %>
+      <div class="md:col-span-2 mt-2">
+         <h4 class="text-xs font-bold uppercase text-gray-500 tracking-wider mb-2 border-b pb-1">Notas Operacionais Internas (Ocultas)</h4>
+         <p class="text-gray-700 text-sm bg-yellow-50 p-3 rounded border border-yellow-200"><%= @donation.notes %></p>
+      </div>
+    <% end %>
+
+  </div>
+</div>

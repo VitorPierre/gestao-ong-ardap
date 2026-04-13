@@ -1,31 +1,15 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+dog_one:
+  name: Rex
+  species: 0 # dog
+  gender: 0  # male
+  size: 1    # medium
+  status: 0  # available
+  weight: 12.5
 
-one:
-  name: MyString
-  species: 1
-  gender: 1
-  approximate_age: MyString
-  breed: MyString
-  size: 1
-  weight: 9.99
-  color: MyString
-  neutered: false
-  vaccinated: false
-  dewormed: false
-  notes: MyText
-  status: 1
-
-two:
-  name: MyString
-  species: 1
-  gender: 1
-  approximate_age: MyString
-  breed: MyString
-  size: 1
-  weight: 9.99
-  color: MyString
-  neutered: false
-  vaccinated: false
-  dewormed: false
-  notes: MyText
-  status: 1
+cat_one:
+  name: Mia
+  species: 1 # cat
+  gender: 1  # female
+  size: 0    # small
+  status: 1  # adopted
+  weight: 4.0

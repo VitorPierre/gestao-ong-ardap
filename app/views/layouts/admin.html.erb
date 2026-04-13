@@ -24,28 +24,27 @@
         <h1 class="text-xl font-bold uppercase tracking-widest text-yellow-500">ONG Admin</h1>
       </div>
       <nav class="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
-        <a href="/admin" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md bg-gray-800 text-white border-l-4 border-yellow-500">
-          Dashboard
-        </a>
-        <%= link_to admin_people_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" do %>
-          Pessoas
+        <%= nav_link "Dashboard", admin_root_path %>
+        <%= nav_link "Pessoas", admin_people_path %>
+        <%= nav_link "Animais", admin_animals_path %>
+        <%= nav_link "Adoções", admin_adoptions_path %>
+        <%= nav_link "Lar Temporário", admin_foster_cares_path %>
+        <%= nav_link "Voluntários", admin_volunteers_path %>
+        <%= nav_link "Documentos", admin_documents_path %>
+        
+
+        <%= nav_link "Saúde Animal", admin_health_records_path %>
+        <%= nav_link "Denúncias", admin_complaints_path %>
+        <%= nav_link "Parcerias", admin_partners_path %>
+        <%= nav_link "Doações", admin_donations_path %>
+        
+        <% if current_user&.admin? %>
+          <div class="pt-4 mt-4 border-t border-gray-800">
+            <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Configurações</h3>
+            <%= nav_link "Equipe (Usuários)", admin_users_path %>
+            <%= nav_link "Log de Auditoria", admin_audit_logs_path %>
+          </div>
         <% end %>
-        <%= link_to admin_animals_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" do %>
-          Animais
-        <% end %>
-        <%= link_to admin_adoptions_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" do %>
-          Adoções
-        <% end %>
-        <%= link_to admin_foster_cares_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" do %>
-          Lar Temporário
-        <% end %>
-        <%= link_to admin_volunteers_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" do %>
-          Voluntários
-        <% end %>
-        <%= link_to admin_documents_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" do %>
-          Documentos
-        <% end %>
-        <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white mt-8">Configurações</a>
       </nav>
     </aside>
 

@@ -1,0 +1,8 @@
+<% content_for :page_title, "Novo Parceiro" %>
+
+<div class="mb-6">
+  <h1 class="text-2xl font-black text-gray-900">Cadastrar Instituição ou Parceiro</h1>
+  <%= link_to "← Voltar para listagem", admin_partners_path, class: "text-sm text-gray-500 hover:text-gray-700" %>
+</div>
+
+<%= render "form", partner: @partner %>

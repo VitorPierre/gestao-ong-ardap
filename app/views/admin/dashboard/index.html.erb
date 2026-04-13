@@ -1,44 +1,125 @@
 <% content_for :page_title, "Dashboard" %>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-  <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100 border-l-4 border-l-yellow-500">
-    <h3 class="text-gray-500 text-sm font-medium">Animais em Lar Temporário</h3>
-    <p class="text-3xl font-bold text-gray-800 mt-2">15</p>
+<div class="flex items-center gap-3 mb-8">
+  <%= link_to "Novo Animal", new_admin_animal_path, class: "bg-gray-900 hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-md shadow flex items-center" %>
+  <%= link_to "Nova Adoção", new_admin_adoption_path, class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-medium py-2 px-4 rounded-md shadow flex items-center" %>
+  <%= link_to "Nova Pessoa", new_admin_person_path, class: "bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md shadow-sm flex items-center" %>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-8">
+  <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-l-yellow-500 flex flex-col justify-center">
+    <h3 class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Animais Disponíveis</h3>
+    <p class="text-4xl font-black text-gray-900 mt-2"><%= @animals_available %></p>
   </div>
-  <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
-    <h3 class="text-gray-500 text-sm font-medium">Animais para Adoção Imediata</h3>
-    <p class="text-3xl font-bold text-gray-800 mt-2">8</p>
+  <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-l-gray-900 flex flex-col justify-center">
+    <h3 class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Em Lar Temporário</h3>
+    <p class="text-4xl font-black text-gray-900 mt-2"><%= @animals_in_foster %></p>
   </div>
-  <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
-    <h3 class="text-gray-500 text-sm font-medium">Adoções no Mês</h3>
-    <p class="text-3xl font-bold text-gray-800 mt-2">4</p>
+  <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-l-green-500 flex flex-col justify-center">
+    <h3 class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Adoções (Últimos 30 dias)</h3>
+    <p class="text-4xl font-black text-gray-900 mt-2"><%= @recent_adoptions %></p>
+  </div>
+  <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-l-red-400 flex flex-col justify-center">
+    <h3 class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Denúncias Abertas</h3>
+    <div class="flex items-center gap-3 mt-2">
+      <p class="text-4xl font-black text-gray-900"><%= @open_complaints %></p>
+      <% if @urgent_complaints > 0 %>
+        <span class="bg-red-100 text-red-800 text-xs font-bold px-2.5 py-1 rounded-full"><%= @urgent_complaints %> urgentes</span>
+      <% end %>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-l-purple-500 flex flex-col justify-center">
+    <h3 class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Parceiros Ativos</h3>
+    <p class="text-4xl font-black text-gray-900 mt-2"><%= @active_partners %></p>
+  </div>
+  <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-l-blue-400 flex flex-col justify-center">
+    <h3 class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Doações (Neste mês)</h3>
+    <p class="text-4xl font-black text-gray-900 mt-2"><%= number_to_currency(@donations_this_month, unit: "R$", separator: ",", delimiter: ".") %></p>
   </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-  <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200">
-    <div class="p-4 border-b border-gray-200">
-      <h3 class="text-lg font-semibold text-gray-800">Atenção Imediata</h3>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50 rounded-t-lg">
+      <h3 class="text-lg font-bold text-gray-800">Últimos Animais Cadastrados</h3>
+      <%= link_to "Ver Todos", admin_animals_path, class: "text-sm text-blue-600 hover:underline font-medium" %>
     </div>
-    <div class="p-4 text-center text-gray-500 py-12">
-      <p>Nenhuma pendência crítica encontrada hoje.</p>
-      <button class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-4 rounded-md">Ver todos os registros</button>
-    </div>
+    <ul class="divide-y divide-gray-100">
+      <% if @latest_animals.any? %>
+        <% @latest_animals.each do |animal| %>
+          <li class="p-4 flex flex-col hover:bg-gray-50">
+            <%= link_to admin_animal_path(animal), class: "block" do %>
+              <span class="text-sm font-bold text-gray-900"><%= animal.name %></span>
+              <span class="text-xs text-gray-500 mt-1 block">Tamanho: <%= animal.size&.titleize || 'N/A' %> | Status: <%= animal.status&.titleize %></span>
+            <% end %>
+          </li>
+        <% end %>
+      <% else %>
+        <li class="p-6 text-center text-gray-500 italic">Nenhum animal cadastrado.</li>
+      <% end %>
+    </ul>
   </div>
 
   <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-    <div class="p-4 border-b border-gray-200">
-      <h3 class="text-lg font-semibold text-gray-800">Últimas Operações</h3>
+    <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50 rounded-t-lg">
+      <h3 class="text-lg font-bold text-gray-800">Últimas Adoções</h3>
+      <%= link_to "Ver Todas", admin_adoptions_path, class: "text-sm text-blue-600 hover:underline font-medium" %>
     </div>
     <ul class="divide-y divide-gray-100">
-      <li class="p-4 flex flex-col">
-        <span class="text-sm font-medium text-gray-800">Luna foi adotada</span>
-        <span class="text-xs text-gray-500 mt-1">Há 1h</span>
-      </li>
-      <li class="p-4 flex flex-col">
-        <span class="text-sm font-medium text-gray-800">Max entrou em lar temporário</span>
-        <span class="text-xs text-gray-500 mt-1">Ontem</span>
-      </li>
+      <% if @latest_adoptions.any? %>
+        <% @latest_adoptions.each do |adoption| %>
+          <li class="p-4 flex flex-col hover:bg-gray-50">
+            <%= link_to admin_adoption_path(adoption), class: "block" do %>
+              <span class="text-sm font-bold text-gray-900"><%= adoption.animal.name %> para <%= adoption.person.name %></span>
+              <span class="text-xs text-gray-500 mt-1 block">Status: <%= adoption.status&.titleize || 'Pendente' %> - <%= time_ago_in_words(adoption.created_at) %> atrás</span>
+            <% end %>
+          </li>
+        <% end %>
+      <% else %>
+        <li class="p-6 text-center text-gray-500 italic">Nenhuma adoção cadastrada.</li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50 rounded-t-lg">
+      <h3 class="text-lg font-bold text-gray-800">Últimas Denúncias</h3>
+      <%= link_to "Ver Todas", admin_complaints_path, class: "text-sm text-blue-600 hover:underline font-medium" %>
+    </div>
+    <ul class="divide-y divide-gray-100">
+      <% if @latest_complaints.any? %>
+        <% @latest_complaints.each do |c| %>
+          <li class="p-4 flex flex-col hover:bg-gray-50">
+            <%= link_to admin_complaint_path(c), class: "block" do %>
+              <span class="text-sm font-bold text-gray-900"><%= c.protocol_number %>: <%= c.category.humanize %></span>
+              <span class="text-xs text-gray-500 mt-1 block">Status: <%= c.status.humanize %> <%= "⚠️ (#{c.priority.humanize})" if c.urgent? || c.critical? %> - Há <%= time_ago_in_words(c.received_at) rescue time_ago_in_words(c.created_at) %></span>
+            <% end %>
+          </li>
+        <% end %>
+      <% else %>
+        <li class="p-6 text-center text-gray-500 italic">Nenhuma denúncia registrada.</li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50 rounded-t-lg">
+      <h3 class="text-lg font-bold text-gray-800">Últimas Doações</h3>
+      <%= link_to "Ver Todas", admin_donations_path, class: "text-sm text-blue-600 hover:underline font-medium" %>
+    </div>
+    <ul class="divide-y divide-gray-100">
+      <% if @latest_donations.any? %>
+        <% @latest_donations.each do |d| %>
+          <li class="p-4 flex flex-col hover:bg-gray-50">
+            <%= link_to admin_donation_path(d), class: "block" do %>
+              <span class="text-sm font-bold text-gray-900"><%= d.partner&.name || d.person&.name || "Anônimo" %></span>
+              <span class="text-xs text-gray-500 mt-1 block"><%= d.donation_type.humanize %>: <%= d.amount ? number_to_currency(d.amount, unit: "R$", separator: ",", delimiter: ".") : d.description&.truncate(40) %> - <%= d.donated_at.strftime("%d/%m/%Y") rescue d.donated_at %></span>
+            <% end %>
+          </li>
+        <% end %>
+      <% else %>
+        <li class="p-6 text-center text-gray-500 italic">Nenhuma doação registrada.</li>
+      <% end %>
     </ul>
   </div>
 </div>

@@ -1,0 +1,43 @@
+<% content_for :page_title, "Selecionar Tipo de Documento" %>
+
+<div class="mb-6">
+  <h1 class="text-2xl font-black text-gray-900">Gerar Novo Documento</h1>
+  <p class="text-sm text-gray-500 mt-1">Escolha a categoria e o modelo que deseja preencher.</p>
+  <%= link_to "← Voltar para todos", admin_documents_path, class: "text-blue-600 hover:underline text-sm font-medium mt-2 inline-block" %>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <% Document.categories.keys.each do |cat| %>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div class="bg-gray-50 border-b border-gray-200 px-4 py-3">
+        <h3 class="font-bold text-gray-800 uppercase tracking-widest text-xs"><%= cat.humanize %></h3>
+      </div>
+      <div class="p-4 flex flex-col gap-2">
+        <% Document.document_types.keys.select { |t| 
+          (cat == 'adoption' && t.start_with?('adoption_')) ||
+          (cat == 'foster_care' && t.start_with?('foster_care_')) ||
+          (cat == 'volunteering' && (t.start_with?('volunteer_') || t == 'image_authorization')) ||
+          (cat == 'animal' && (t == 'animal_registration' || t == 'castration_declaration' || t.start_with?('veterinary_'))) ||
+          (cat == 'person' && t == 'person_registration') ||
+          (cat == 'donation' && (t == 'donation_receipt' || t == 'partnership_term')) ||
+          (cat == 'complaint' && t.start_with?('complaint_'))
+        }.each do |type| %>
+          <%= link_to new_admin_document_path(document_type: type, category: cat), class: "block w-full border border-gray-200 hover:border-yellow-400 hover:bg-yellow-50 rounded px-3 py-2 text-sm text-gray-700 font-medium transition" do %>
+            📄 <%= type.titleize %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div class="bg-gray-50 border-b border-gray-200 px-4 py-3">
+      <h3 class="font-bold text-gray-800 uppercase tracking-widest text-xs">OUTROS / MANUAL</h3>
+    </div>
+    <div class="p-4 flex flex-col gap-2">
+      <%= link_to new_admin_document_path, class: "block w-full border border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 rounded px-3 py-2 text-sm text-gray-700 font-medium transition text-center" do %>
+        ⬆️ Fazer Upload Externo
+      <% end %>
+    </div>
+  </div>
+</div>

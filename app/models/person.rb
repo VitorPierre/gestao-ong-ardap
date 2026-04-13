@@ -8,4 +8,5 @@ class Person < ApplicationRecord
 
   has_many :document_links, as: :documentable, dependent: :destroy
   has_many :documents, through: :document_links
+  has_many :donations, dependent: :nullify
 end

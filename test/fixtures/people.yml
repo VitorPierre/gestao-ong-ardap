@@ -1,23 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+person_one:
+  name: Joao Silva Adotante
+  email: joao.fix@email.com
+  cpf: "111.222.333-44"
+  phone: "11999999999"
 
-one:
-  name: MyString
-  cpf: MyString
-  rg: MyString
-  phone: MyString
-  email: MyString
-  address: MyString
-  city: MyString
-  state: MyString
-  relationship_type: MyString
-
-two:
-  name: MyString
-  cpf: MyString
-  rg: MyString
-  phone: MyString
-  email: MyString
-  address: MyString
-  city: MyString
-  state: MyString
-  relationship_type: MyString
+person_two:
+  name: Maria Lar Temporario
+  email: maria.foster@email.com
+  cpf: "444.555.666-77"
+  phone: "11988888888"

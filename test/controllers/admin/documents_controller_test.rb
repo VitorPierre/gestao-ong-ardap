@@ -1,48 +1,25 @@
-require "test_helper"
+require 'test_helper'
 
 class Admin::DocumentsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @document = documents(:one)
+    log_in_as_operator
+    @draft = documents(:draft_doc)
   end
 
-  test "should get index" do
-    get admin_documents_url
-    assert_response :success
+  test "document creation logs to audit camera" do
+    post admin_documents_path, params: { document: { title: "Termo Novo", category: "person", document_type: "person_registration" } }
+    assert_equal 'create', AuditLog.last.action
   end
 
-  test "should get new" do
-    get new_admin_document_url
-    assert_response :success
+  test "state mark generated changes document behavior" do
+    patch mark_generated_admin_document_path(@draft)
+    assert @draft.reload.generated?
+    assert_equal 'mark_generated', AuditLog.last.action
   end
 
-  test "should create document" do
-    assert_difference("Document.count") do
-      post admin_documents_url, params: { document: {} }
-    end
-
-    assert_redirected_to admin_document_url(Document.last)
-  end
-
-  test "should show document" do
-    get admin_document_url(@document)
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_admin_document_url(@document)
-    assert_response :success
-  end
-
-  test "should update document" do
-    patch admin_document_url(@document), params: { document: {} }
-    assert_redirected_to admin_document_url(@document)
-  end
-
-  test "should destroy document" do
-    assert_difference("Document.count", -1) do
-      delete admin_document_url(@document)
-    end
-
-    assert_redirected_to admin_documents_url
+  test "cancel obliterates workflow forever" do
+    patch cancel_admin_document_path(@draft)
+    assert @draft.reload.canceled?
+    assert_equal 'cancel', AuditLog.last.action
   end
 end

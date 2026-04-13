@@ -1,0 +1,37 @@
+<div class="space-y-4 border-t border-gray-200 mt-6 pt-6">
+  <h4 class="font-bold text-gray-800 text-lg uppercase mb-4 tracking-wider"><%= "Dados do Documento: ACORDO E TERMO DE PARCERIA INSTITUCIONAL" %></h4>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="">
+      <label class="block text-sm font-semibold text-gray-700">Ref Empresa</label>
+      <input type="text" name="document_data[partner_id]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border" />
+    </div>
+    <div class="">
+      <label class="block text-sm font-semibold text-gray-700">Empresa Parceira</label>
+      <input type="text" name="document_data[partner_name]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border" />
+    </div>
+    <div class="">
+      <label class="block text-sm font-semibold text-gray-700">CNPJ</label>
+      <input type="text" name="document_data[partner_cnpj]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border" />
+    </div>
+    <div class="md:col-span-2">
+      <label class="block text-sm font-semibold text-gray-700">O que cede?</label>
+      <textarea name="document_data[partnership_description]" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border"></textarea>
+    </div>
+    <div class="">
+      <label class="block text-sm font-semibold text-gray-700">Começa em</label>
+      <input type="date" name="document_data[start_date]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border" />
+    </div>
+    <div class="">
+      <label class="block text-sm font-semibold text-gray-700">Vigência do Contrato</label>
+      <input type="text" name="document_data[duration]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border" />
+    </div>
+    <div class="md:col-span-2">
+      <label class="block text-sm font-semibold text-gray-700">Ações da ARDAP</label>
+      <textarea name="document_data[obligations_ngo]" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border"></textarea>
+    </div>
+    <div class="md:col-span-2">
+      <label class="block text-sm font-semibold text-gray-700">Ações da Patrocinadora</label>
+      <textarea name="document_data[obligations_partner]" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border"></textarea>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div style="font-family: Arial, sans-serif; background: #fff; padding: 20px;">
+  <h2 style="text-align: center; font-weight: bold; font-size: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 30px;">
+    PRESCRIÇÃO E RECEITUÁRIO MÉDICO VETERINÁRIO
+  </h2>
+  <div style="line-height: 1.8; font-size: 14px;">
+    <p><strong>Ref Animal:</strong> <%= data[:"animal_id"] %></p>
+    <p><strong>Médico Emissor:</strong> <%= data[:"vet_name"] %></p>
+    <p><strong>CRMV:</strong> <%= data[:"vet_crmv"] %></p>
+    <p><strong>Medicamentos, Via, Dosagem (Uso Interno e Externo):</strong> <%= data[:"medications"] %></p>
+    <p><strong>Recomendações Auxiliares:</strong> <%= data[:"instructions"] %></p>
+    <p><strong>Válida Trancrito em Dias:</strong> <%= data[:"validity_days"] %></p>
+    <p><strong>Data Receituário:</strong> <%= data[:"date"] %></p>
+  </div>
+  
+  <div style="margin-top: 100px; display: flex; justify-content: space-between; border-top: 1px dashed #ccc; padding-top: 20px;">
+    <div style="width: 48%; text-align: center;">
+      <p style="border-top: 1px solid #000; padding-top: 5px;">Atestador ARDAP<br><span style="font-size: 12px">Documento Digital</span></p>
+    </div>
+    <div style="width: 48%; text-align: center;">
+      <p style="border-top: 1px solid #000; padding-top: 5px;">Interveniente/Outorgado<br><span style="font-size: 12px">Assinatura no Verso ou Digital</span></p>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,12 @@
-<%= form_with(model: [:admin, person], class: "contents") do |form| %>
-  <% if person.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(person.errors.count, "error") %> prohibited this person from being saved:</h2>
+<%# Classe utilitária CSS para inputs %>
+<% input_class = "block w-full rounded-md border border-gray-300 px-3 py-2 mt-1 shadow-sm text-sm focus:border-yellow-500 focus:ring-yellow-500 focus:outline-none" %>
+<% label_class = "block text-sm font-medium text-gray-700 mt-5" %>
 
-      <ul class="list-disc ml-6">
+<%= form_with(model: [:admin, person], class: "bg-white p-6 rounded-lg shadow border border-gray-200") do |form| %>
+  <% if person.errors.any? %>
+    <div class="bg-red-50 text-red-700 px-4 py-3 rounded-md mb-5 border-l-4 border-red-500">
+      <p class="font-bold mb-1"><%= pluralize(person.errors.count, "erro impediu", "erros impediram") %> o cadastro de ser salvo:</p>
+      <ul class="list-disc ml-5 text-sm">
         <% person.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,7 +14,50 @@
     </div>
   <% end %>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+    <div>
+      <%= form.label :name, "Nome Completo", class: label_class %>
+      <%= form.text_field :name, class: input_class, placeholder: "Ex: João da Silva" %>
+    </div>
+    <div>
+      <%= form.label :email, "E-mail", class: label_class %>
+      <%= form.email_field :email, class: input_class, placeholder: "email@exemplo.com" %>
+    </div>
+    <div>
+      <%= form.label :phone, "Telefone / WhatsApp", class: label_class %>
+      <%= form.text_field :phone, class: input_class, placeholder: "(11) 99999-9999" %>
+    </div>
+    <div>
+      <%= form.label :cpf, "CPF", class: label_class %>
+      <%= form.text_field :cpf, class: input_class, placeholder: "000.000.000-00" %>
+    </div>
+    <div>
+      <%= form.label :rg, "RG", class: label_class %>
+      <%= form.text_field :rg, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :relationship_type, "Tipo de Relacionamento", class: label_class %>
+      <%= form.select :relationship_type,
+          [["Adotante", "adoptee"], ["Tutor Temporário", "foster"], ["Voluntário", "volunteer"], ["Doador", "donor"], ["Outro", "other"]],
+          { include_blank: "Selecione..." },
+          class: input_class %>
+    </div>
+    <div>
+      <%= form.label :address, "Endereço", class: label_class %>
+      <%= form.text_field :address, class: input_class, placeholder: "Rua, número, bairro" %>
+    </div>
+    <div>
+      <%= form.label :city, "Cidade", class: label_class %>
+      <%= form.text_field :city, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :state, "Estado (UF)", class: label_class %>
+      <%= form.text_field :state, class: input_class, placeholder: "SP", maxlength: 2 %>
+    </div>
+  </div>
+
+  <div class="mt-6 flex items-center gap-4">
+    <%= form.submit "Salvar Pessoa", class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2.5 px-5 rounded-md shadow transition cursor-pointer" %>
+    <%= link_to "Cancelar", admin_people_path, class: "text-sm text-gray-500 hover:text-gray-700" %>
   </div>
 <% end %>

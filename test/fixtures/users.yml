@@ -1,13 +1,29 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+<% password_hash = BCrypt::Password.create('password123', cost: 4) %>
 
-one:
-  name: MyString
-  email: MyString
-  password_digest: MyString
-  role: 1
+admin:
+  name: Admin User
+  email: admin@ardap.org
+  password_digest: <%= password_hash %>
+  role: 0
+  active: true
 
-two:
-  name: MyString
-  email: MyString
-  password_digest: MyString
+operator:
+  name: Operator User
+  email: operator@ardap.org
+  password_digest: <%= password_hash %>
   role: 1
+  active: true
+
+viewer:
+  name: Viewer User
+  email: viewer@ardap.org
+  password_digest: <%= password_hash %>
+  role: 2
+  active: true
+
+inactive_user:
+  name: Inactive Operator
+  email: inactive@ardap.org
+  password_digest: <%= password_hash %>
+  role: 1
+  active: false

@@ -1,0 +1,12 @@
+<% if object.errors.any? %>
+  <div id="error_explanation" class="bg-red-50 text-red-500 px-4 py-3 font-medium rounded-md mb-5 border-l-4 border-red-500 shadow-sm">
+    <h2 class="text-red-700 font-bold mb-2">
+      <%= pluralize(object.errors.count, "erro impediu", "erros impediram") %> <%= object.class.model_name.human.downcase %> de ser salvo:
+    </h2>
+    <ul class="list-disc ml-6 mt-1 text-sm">
+      <% object.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

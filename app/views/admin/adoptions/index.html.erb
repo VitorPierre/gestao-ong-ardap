@@ -6,8 +6,8 @@
   <% end %>
 
   <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Adoptions</h1>
-    <%= link_to "New adoption", new_admin_adoption_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+    <h1 class="font-bold text-4xl">Adoções</h1>
+    <%= link_to "New adoption", new_admin_adoption_path, class: "rounded-md px-3.5 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-gray-900 shadow-sm transition hover:-translate-y-0.5 block font-medium" %>
   </div>
 
   <div id="adoptions" class="min-w-full divide-y divide-gray-200 space-y-5">
@@ -18,12 +18,16 @@
           <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
             <%= link_to "Show", [:admin, adoption], class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
             <%= link_to "Edit", edit_admin_adoption_path(adoption), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", [:admin, adoption], method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+            <% if can_write? %>
+  <%= button_to "Destroy", [:admin, adoption], method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+<% end %>
           </div>
         </div>
       <% end %>
     <% else %>
-      <p class="text-center my-10">No adoptions found.</p>
+      <div class="bg-white rounded-lg border border-dashed border-gray-300 p-10 text-center my-8">
+        <p class="text-gray-500 text-lg">Nenhum registro encontrado.</p>
+      </div>
     <% end %>
   </div>
 </div>

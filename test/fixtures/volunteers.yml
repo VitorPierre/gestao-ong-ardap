@@ -1,13 +1,4 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  person: one
-  availability: MyString
-  activity_type: MyString
-  image_use_authorized: false
-
-two:
-  person: two
-  availability: MyString
-  activity_type: MyString
-  image_use_authorized: false
+volunteer_one:
+  person: person_one
+  activity_type: Administrativo
+  availability: Sabados e Domingos

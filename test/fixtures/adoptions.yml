@@ -1,17 +1,5 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  person: one
-  animal: one
-  applied_on: 2026-04-10
-  status: 1
-  questionnaire_answers: MyText
-  notes: MyText
-
-two:
-  person: two
-  animal: two
-  applied_on: 2026-04-10
-  status: 1
-  questionnaire_answers: MyText
-  notes: MyText
+adoption_one:
+  animal: cat_one
+  person: person_one
+  status: 1 # approved
+  applied_on: <%= Date.today %>

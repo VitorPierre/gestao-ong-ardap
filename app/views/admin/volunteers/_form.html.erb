@@ -1,9 +1,11 @@
-<%= form_with(model: [:admin, volunteer], class: "contents") do |form| %>
-  <% if volunteer.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(volunteer.errors.count, "error") %> prohibited this volunteer from being saved:</h2>
+<% input_class = "block w-full rounded-md border border-gray-300 px-3 py-2 mt-1 shadow-sm text-sm focus:border-yellow-500 focus:outline-none" %>
+<% label_class = "block text-sm font-medium text-gray-700 mt-5" %>
 
-      <ul class="list-disc ml-6">
+<%= form_with(model: [:admin, volunteer], class: "bg-white p-6 rounded-lg shadow border border-gray-200") do |form| %>
+  <% if volunteer.errors.any? %>
+    <div class="bg-red-50 text-red-700 px-4 py-3 rounded-md mb-5 border-l-4 border-red-500">
+      <p class="font-bold mb-1"><%= pluralize(volunteer.errors.count, "erro impediu", "erros impediram") %> o cadastro de ser salvo:</p>
+      <ul class="list-disc ml-5 text-sm">
         <% volunteer.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,7 +13,36 @@
     </div>
   <% end %>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+    <div>
+      <%= form.label :person_id, "Pessoa Vinculada", class: label_class %>
+      <%= form.collection_select :person_id, Person.order(:name), :id, :name,
+          { include_blank: "Selecione uma pessoa..." },
+          class: input_class %>
+    </div>
+    <div>
+      <%= form.label :activity_type, "Tipo de Atividade", class: label_class %>
+      <%= form.select :activity_type,
+          [["Passeio com Animais", "walking"], ["Lar Temporário", "fostering"], ["Divulgação e Mídias", "media"], ["Captação de Recursos", "fundraising"], ["Cuidados Veterinários", "veterinary"], ["Administrativo", "administrative"], ["Outro", "other"]],
+          { include_blank: "Selecione..." },
+          class: input_class %>
+    </div>
+    <div>
+      <%= form.label :availability, "Disponibilidade", class: label_class %>
+      <%= form.select :availability,
+          [["Fins de Semana", "weekends"], ["Dias Úteis", "weekdays"], ["Eventual", "occasional"], ["Integral", "fulltime"]],
+          { include_blank: "Selecione..." },
+          class: input_class %>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-2 mt-6">
+    <%= form.check_box :image_use_authorized, class: "h-4 w-4 rounded border-gray-300 text-yellow-500" %>
+    <%= form.label :image_use_authorized, "Autoriza uso de imagem pela ONG", class: "text-sm font-medium text-gray-700" %>
+  </div>
+
+  <div class="mt-6 flex items-center gap-4">
+    <%= form.submit "Salvar Voluntário", class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2.5 px-5 rounded-md shadow transition cursor-pointer" %>
+    <%= link_to "Cancelar", admin_volunteers_path, class: "text-sm text-gray-500 hover:text-gray-700" %>
   </div>
 <% end %>

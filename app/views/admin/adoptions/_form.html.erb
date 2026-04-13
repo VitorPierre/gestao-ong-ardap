@@ -1,9 +1,11 @@
-<%= form_with(model: [:admin, adoption], class: "contents") do |form| %>
-  <% if adoption.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(adoption.errors.count, "error") %> prohibited this adoption from being saved:</h2>
+<% input_class = "block w-full rounded-md border border-gray-300 px-3 py-2 mt-1 shadow-sm text-sm focus:border-yellow-500 focus:outline-none" %>
+<% label_class = "block text-sm font-medium text-gray-700 mt-5" %>
 
-      <ul class="list-disc ml-6">
+<%= form_with(model: [:admin, adoption], class: "bg-white p-6 rounded-lg shadow border border-gray-200") do |form| %>
+  <% if adoption.errors.any? %>
+    <div class="bg-red-50 text-red-700 px-4 py-3 rounded-md mb-5 border-l-4 border-red-500">
+      <p class="font-bold mb-1"><%= pluralize(adoption.errors.count, "erro impediu", "erros impediram") %> o cadastro de ser salvo:</p>
+      <ul class="list-disc ml-5 text-sm">
         <% adoption.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,7 +13,44 @@
     </div>
   <% end %>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+    <div>
+      <%= form.label :person_id, "Pessoa (Adotante)", class: label_class %>
+      <%= form.collection_select :person_id, Person.order(:name), :id, :name,
+          { include_blank: "Selecione uma pessoa..." },
+          class: input_class %>
+    </div>
+    <div>
+      <%= form.label :animal_id, "Animal", class: label_class %>
+      <%= form.collection_select :animal_id, Animal.order(:name), :id, :name,
+          { include_blank: "Selecione um animal..." },
+          class: input_class %>
+    </div>
+    <div>
+      <%= form.label :applied_on, "Data da Solicitação", class: label_class %>
+      <%= form.date_field :applied_on, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :status, "Status", class: label_class %>
+      <%= form.select :status,
+          [["Pendente", "pending"], ["Aprovada", "approved"], ["Rejeitada", "rejected"], ["Concluída", "completed"]],
+          { include_blank: "Selecione..." },
+          class: input_class %>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <%= form.label :questionnaire_answers, "Respostas do Questionário", class: label_class %>
+    <%= form.text_area :questionnaire_answers, rows: 5, class: input_class, placeholder: "Registre aqui as respostas da entrevista de adoção..." %>
+  </div>
+
+  <div class="mt-5">
+    <%= form.label :notes, "Observações Internas", class: label_class %>
+    <%= form.text_area :notes, rows: 3, class: input_class, placeholder: "Notas da equipe sobre esta adoção..." %>
+  </div>
+
+  <div class="mt-6 flex items-center gap-4">
+    <%= form.submit "Salvar Adoção", class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2.5 px-5 rounded-md shadow transition cursor-pointer" %>
+    <%= link_to "Cancelar", admin_adoptions_path, class: "text-sm text-gray-500 hover:text-gray-700" %>
   </div>
 <% end %>

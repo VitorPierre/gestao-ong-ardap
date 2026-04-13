@@ -1,0 +1,137 @@
+<% input_class = "block w-full rounded-md border border-gray-300 px-3 py-2 mt-1 shadow-sm text-sm focus:border-yellow-500 focus:outline-none" %>
+<% label_class = "block text-sm font-medium text-gray-700 mt-4" %>
+
+<%= form_with(model: [:admin, complaint], class: "bg-white p-6 rounded-lg shadow border border-gray-200") do |form| %>
+  <% if complaint.errors.any? %>
+    <div class="bg-red-50 text-red-700 px-4 py-3 rounded-md mb-5 border-l-4 border-red-500">
+      <ul class="list-disc ml-5 text-sm">
+        <% complaint.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+    <div>
+      <%= form.label :category, "Categoria", class: label_class %>
+      <%= form.select :category, Complaint.categories.keys.map { |c| [c.humanize, c] }, { include_blank: "Selecione..." }, class: input_class %>
+    </div>
+    
+    <div>
+      <%= form.label :priority, "Prioridade Inicial", class: label_class %>
+      <%= form.select :priority, Complaint.priorities.keys.map { |p| [p.humanize, p] }, {}, class: input_class %>
+    </div>
+    
+    <div class="md:col-span-2">
+      <%= form.label :description, "Descrição da Ocorrência", class: label_class %>
+      <%= form.text_area :description, rows: 4, class: input_class %>
+    </div>
+
+    <!-- Seção: Localização -->
+    <div class="md:col-span-2 border-t mt-4 pt-2">
+      <h4 class="font-bold text-gray-800 text-sm">Dados do Local</h4>
+    </div>
+    
+    <div class="md:col-span-2">
+      <%= form.label :location_address, "Endereço Completo", class: label_class %>
+      <%= form.text_field :location_address, class: input_class %>
+    </div>
+
+    <div>
+      <%= form.label :location_city, "Cidade", class: label_class %>
+      <%= form.text_field :location_city, class: input_class %>
+    </div>
+
+    <div>
+      <%= form.label :location_reference, "Ponto de Referência", class: label_class %>
+      <%= form.text_field :location_reference, class: input_class %>
+    </div>
+
+    <!-- Seção: Controle Interno -->
+    <div class="md:col-span-2 border-t mt-4 pt-2">
+      <h4 class="font-bold text-gray-800 text-sm">Controle Interno</h4>
+    </div>
+
+    <div>
+      <%= form.label :received_at, "Data de Recebimento", class: label_class %>
+      <%= form.datetime_field :received_at, class: input_class %>
+    </div>
+
+    <div>
+      <%= form.label :assigned_to, "Responsável/Equipe (Opcional)", class: label_class %>
+      <%= form.text_field :assigned_to, class: input_class, placeholder: "Nome do voluntário" %>
+    </div>
+    
+    <div>
+      <%= form.label :status, "Status", class: label_class %>
+      <%= form.select :status, Complaint.statuses.keys.map { |s| [s.humanize, s] }, {}, class: input_class %>
+    </div>
+
+    <div>
+      <%= form.label :animal_id, "Animal Vinculado (Se resgatado)", class: label_class %>
+      <%= form.collection_select :animal_id, Animal.order(:name), :id, :name, { include_blank: "Nenhum animal vinculado" }, class: input_class %>
+    </div>
+
+    <!-- Seção: Denunciante -->
+    <div class="md:col-span-2 border-t mt-4 pt-2">
+      <h4 class="font-bold text-gray-800 text-sm">Dados do Denunciante</h4>
+      
+      <div class="mt-3 flex items-center">
+        <%= form.check_box :anonymous, id: "anonymous-checkbox", class: "h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded" %>
+        <%= form.label :anonymous, "Manter denúncia anônima (Oculta Nome e Telefone)", class: "ml-2 block text-sm text-gray-900 cursor-pointer" %>
+      </div>
+    </div>
+
+    <div class="complainant-fields">
+      <%= form.label :complainant_name, "Nome", class: label_class %>
+      <%= form.text_field :complainant_name, class: input_class, id: "complainant-name" %>
+    </div>
+
+    <div class="complainant-fields">
+      <%= form.label :complainant_phone, "Telefone", class: label_class %>
+      <%= form.text_field :complainant_phone, class: input_class, id: "complainant-phone" %>
+    </div>
+
+    <div class="md:col-span-2 mt-4">
+      <%= form.label :notes, "Notas Internas (Não visível em relatórios públicos)", class: label_class %>
+      <%= form.text_area :notes, rows: 2, class: input_class %>
+    </div>
+  </div>
+
+  <div class="mt-8 flex items-center gap-4 border-t pt-5">
+    <%= form.submit "Salvar", class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2.5 px-6 rounded-md shadow transition cursor-pointer" %>
+    <%= link_to "Cancelar", complaint.new_record? ? admin_complaints_path : admin_complaint_path(complaint), class: "text-sm text-gray-500 hover:text-gray-700" %>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    setupAnonymousToggle();
+  });
+  document.addEventListener("DOMContentLoaded", function() {
+    setupAnonymousToggle();
+  });
+
+  function setupAnonymousToggle() {
+    const cb = document.getElementById("anonymous-checkbox");
+    if(!cb) return;
+
+    const fields = document.querySelectorAll(".complainant-fields");
+    const nameInput = document.getElementById("complainant-name");
+    const phoneInput = document.getElementById("complainant-phone");
+
+    function toggleFields() {
+      if(cb.checked) {
+        fields.forEach(f => f.style.display = 'none');
+        nameInput.value = "";
+        phoneInput.value = "";
+      } else {
+        fields.forEach(f => f.style.display = 'block');
+      }
+    }
+    
+    cb.addEventListener("change", toggleFields);
+    toggleFields(); // initial state
+  }
+</script>

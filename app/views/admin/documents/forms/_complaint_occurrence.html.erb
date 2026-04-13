@@ -1,0 +1,29 @@
+<div class="space-y-4 border-t border-gray-200 mt-6 pt-6">
+  <h4 class="font-bold text-gray-800 text-lg uppercase mb-4 tracking-wider"><%= "Dados do Documento: TERMO REGISTRAL DE OCORRÊNCIA E AUTUAÇÃO" %></h4>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="">
+      <label class="block text-sm font-semibold text-gray-700">DEN ID</label>
+      <input type="text" name="document_data[complaint_id]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border" />
+    </div>
+    <div class="">
+      <label class="block text-sm font-semibold text-gray-700">Data Flagrante</label>
+      <input type="date" name="document_data[occurrence_date]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border" />
+    </div>
+    <div class="md:col-span-2">
+      <label class="block text-sm font-semibold text-gray-700">Onde? Local Extenso</label>
+      <textarea name="document_data[location_description]" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border"></textarea>
+    </div>
+    <div class="md:col-span-2">
+      <label class="block text-sm font-semibold text-gray-700">Partes Qualificadas</label>
+      <textarea name="document_data[involved_parties]" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border"></textarea>
+    </div>
+    <div class="md:col-span-2">
+      <label class="block text-sm font-semibold text-gray-700">Sinopse do Inquérito</label>
+      <textarea name="document_data[description_of_facts]" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border"></textarea>
+    </div>
+    <div class="md:col-span-2">
+      <label class="block text-sm font-semibold text-gray-700">Medidas Cautelares Aplicadas</label>
+      <textarea name="document_data[measures_taken]" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border"></textarea>
+    </div>
+  </div>
+</div>

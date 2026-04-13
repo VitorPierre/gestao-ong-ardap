@@ -1,0 +1,61 @@
+<% content_for :page_title, "Prontuário" %>
+
+<div class="bg-white rounded-lg shadow border border-gray-200 p-6 max-w-3xl">
+  <div class="flex justify-between items-start mb-4">
+    <div>
+      <span class="inline-block bg-gray-100 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full uppercase mb-2">
+        <%= @health_record.record_type.humanize %>
+      </span>
+      <h1 class="text-2xl font-black text-gray-900">
+        <%= @health_record.animal&.name || "Animal desconhecido" %>
+      </h1>
+      <p class="text-sm text-gray-500 mt-1">Atendimento em <%= @health_record.occurred_on %></p>
+    </div>
+    <div class="flex gap-2">
+      <% if can_write? %><%= link_to "Editar", edit_admin_health_record_path(@health_record), class: "bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-md text-sm" %><% end %>
+      <% if can_write? %>
+  <%= button_to "Excluir", admin_health_record_path(@health_record), method: :delete,
+            class: "bg-red-600 hover:bg-red-500 text-white font-medium py-2 px-4 rounded-md text-sm cursor-pointer",
+            data: { turbo_confirm: "Confirmar exclusão?" } %>
+<% end %>
+    </div>
+  </div>
+
+  <dl class="grid grid-cols-2 gap-4 mt-6 text-sm">
+    <% if @health_record.veterinarian.present? %>
+      <div><dt class="text-gray-500 font-medium">Veterinário</dt><dd class="text-gray-900 mt-1"><%= @health_record.veterinarian %></dd></div>
+    <% end %>
+    <% if @health_record.clinic_location.present? %>
+      <div><dt class="text-gray-500 font-medium">Clínica / Local</dt><dd class="text-gray-900 mt-1"><%= @health_record.clinic_location %></dd></div>
+    <% end %>
+    <% if @health_record.weight_kg.present? %>
+      <div><dt class="text-gray-500 font-medium">Peso</dt><dd class="text-gray-900 mt-1"><%= @health_record.weight_kg %> kg</dd></div>
+    <% end %>
+    <% if @health_record.next_appointment.present? %>
+      <div><dt class="text-gray-500 font-medium">Próximo retorno</dt><dd class="text-yellow-600 font-semibold mt-1"><%= @health_record.next_appointment %></dd></div>
+    <% end %>
+  </dl>
+
+  <% if @health_record.diagnosis.present? %>
+    <div class="mt-5 border-t pt-4">
+      <p class="text-sm font-semibold text-gray-700">Diagnóstico / Procedimento</p>
+      <p class="text-sm text-gray-800 mt-1 whitespace-pre-line"><%= @health_record.diagnosis %></p>
+    </div>
+  <% end %>
+  <% if @health_record.treatment.present? %>
+    <div class="mt-4">
+      <p class="text-sm font-semibold text-gray-700">Tratamento</p>
+      <p class="text-sm text-gray-800 mt-1 whitespace-pre-line"><%= @health_record.treatment %></p>
+    </div>
+  <% end %>
+  <% if @health_record.notes.present? %>
+    <div class="mt-4">
+      <p class="text-sm font-semibold text-gray-700">Observações</p>
+      <p class="text-sm text-gray-600 mt-1 whitespace-pre-line"><%= @health_record.notes %></p>
+    </div>
+  <% end %>
+
+  <div class="mt-6 pt-4 border-t">
+    <%= link_to "← Voltar para Saúde Animal", admin_health_records_path, class: "text-sm text-gray-500 hover:text-gray-700" %>
+  </div>
+</div>

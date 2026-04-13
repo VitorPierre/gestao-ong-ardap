@@ -1,0 +1,6 @@
+donation_one:
+  partner: partner_one
+  amount: 500.00
+  donation_type: 0 # value/financial
+  donated_at: <%= Date.today %>
+  status: 1 # confirmed

@@ -30,6 +30,40 @@
       <p class="text-gray-500 italic mb-6">Nenhum documento vinculado.</p>
     <% end %>
 
+    <%# ── Doações da Pessoa ── %>
+    <div class="mt-8 mb-4 pt-6 border-t border-gray-200">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-2xl font-bold">Doações Registradas</h3>
+        <% if can_write? %>
+  <%= link_to "+ Nova Doação", new_admin_donation_path(person_id: @person.id), class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-medium py-1.5 px-3 rounded-md text-sm" %>
+<% end %>
+      </div>
+      <% if @person.donations.any? %>
+        <div class="space-y-3 mb-6">
+          <% @person.donations.order(donated_at: :desc).each do |donation| %>
+            <div class="bg-white p-4 border rounded shadow-sm flex items-center justify-between">
+              <div>
+                <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full mr-2"><%= donation.donation_type.humanize %></span>
+                <span class="text-sm font-semibold text-gray-900"><%= l(donation.donated_at) rescue donation.donated_at %></span>
+                <p class="text-xs text-gray-500 mt-1">
+                  <%= donation.amount ? "Valor: #{number_to_currency(donation.amount, unit: "R$", separator: ",", delimiter: ".")}" : "Descrição: #{donation.description&.truncate(60)}" %>
+                  <% if donation.recurrent? %>
+                    <span class="ml-2 bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded border border-blue-100"><%= donation.recurrence_interval&.humanize %></span>
+                  <% end %>
+                </p>
+              </div>
+              <div class="flex flex-col items-end gap-1">
+                <span class="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-700 font-medium"><%= donation.status.humanize %></span>
+                <%= link_to "Ver", admin_donation_path(donation), class: "text-blue-600 hover:underline text-sm" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 italic mb-6">Nenhuma doação cadastrada para esta pessoa.</p>
+      <% end %>
+    </div>
+
     <div class="bg-gray-100 p-4 rounded mb-6">
       <h4 class="font-medium mb-3">Vincular Novo Documento</h4>
       <%= form_with model: DocumentLink.new, url: admin_document_links_path, local: true, class: "flex items-end gap-4" do |f| %>
@@ -47,6 +81,8 @@
   <div class="mt-8 flex items-center gap-2">
     <%= link_to "Edit this person", edit_admin_person_path(@person), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
     <%= link_to "Back to people", admin_people_path, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-    <%= button_to "Destroy this person", [:admin, @person], method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+    <% if can_write? %>
+  <%= button_to "Destroy this person", [:admin, @person], method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+<% end %>
   </div>
 </div>

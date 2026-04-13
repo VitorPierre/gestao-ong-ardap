@@ -1,70 +1,49 @@
 class Admin::PeopleController < Admin::BaseController
   before_action :set_person, only: %i[ show edit update destroy ]
 
-  # GET /admin/people or /admin/people.json
   def index
-    @people = Person.all
+    @people = Person.all.order(:name)
   end
 
-  # GET /admin/people/1 or /admin/people/1.json
   def show
   end
 
-  # GET /admin/people/new
   def new
     @person = Person.new
   end
 
-  # GET /admin/people/1/edit
   def edit
   end
 
-  # POST /admin/people or /admin/people.json
   def create
     @person = Person.new(person_params)
-
-    respond_to do |format|
-      if @person.save
-        format.html { redirect_to [:admin, @person], notice: "Person was successfully created." }
-        format.json { render :show, status: :created, location: @person }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @person.errors, status: :unprocessable_entity }
-      end
+    if @person.save
+      redirect_to admin_people_path, notice: "Pessoa cadastrada com sucesso."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /admin/people/1 or /admin/people/1.json
   def update
-    respond_to do |format|
-      if @person.update(person_params)
-        format.html { redirect_to [:admin, @person], notice: "Person was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @person }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @person.errors, status: :unprocessable_entity }
-      end
+    if @person.update(person_params)
+      redirect_to admin_person_path(@person), notice: "Pessoa atualizada com sucesso.", status: :see_other
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /admin/people/1 or /admin/people/1.json
   def destroy
     @person.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to admin_people_path, notice: "Person was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    redirect_to admin_people_path, notice: "Pessoa removida com sucesso.", status: :see_other
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_person
-      @person = Person.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def person_params
-      params.fetch(:person, {})
-    end
+  def set_person
+    @person = Person.find(params[:id])
+  end
+
+  def person_params
+    params.require(:person).permit(:name, :email, :phone, :cpf, :rg, :address, :city, :state, :relationship_type)
+  end
 end

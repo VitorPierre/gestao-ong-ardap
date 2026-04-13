@@ -1,0 +1,45 @@
+<%= form_with(model: [:admin, user], class: "bg-white p-6 rounded-lg shadow-sm border border-gray-200") do |form| %>
+  <% if user.errors.any? %>
+    <div class="bg-red-50 text-red-700 px-4 py-3 rounded mb-5 text-sm border border-red-200">
+      <ul class="list-disc ml-5">
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% input_class = "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm px-3 py-2 border" %>
+
+  <div class="space-y-4">
+    <div>
+      <%= form.label :name, "Nome Completo", class: "block text-sm font-semibold text-gray-700" %>
+      <%= form.text_field :name, class: input_class %>
+    </div>
+
+    <div>
+      <%= form.label :email, "E-mail (usado para Login)", class: "block text-sm font-semibold text-gray-700" %>
+      <%= form.email_field :email, class: input_class %>
+    </div>
+    
+    <div>
+      <%= form.label :role, "Nível de Acesso (Cargo)", class: "block text-sm font-semibold text-gray-700" %>
+      <%= form.select :role, User.roles.keys.map { |r| [r.humanize, r] }, {}, class: input_class %>
+      <div class="text-xs text-gray-500 mt-2 space-y-1 bg-gray-50 p-3 rounded">
+        <p><strong class="font-bold text-gray-700">Admin:</strong> Acesso total. Pode mudar senhas, invativar usuários, e apagar registros permanentemente. Vê toda a trilha de logs.</p>
+        <p><strong class="font-bold text-gray-700">Operator:</strong> Atua no sistema da ONG. Pode resgatar animais, dar baixa em adoções e gerar documentos e assinaturas, mas não cadastra pessoas na TI da empresa.</p>
+        <p><strong class="font-bold text-gray-700">Viewer:</strong> Função consultiva e painel de informações globais e financeiras.</p>
+      </div>
+    </div>
+
+    <div class="pt-4 border-t border-gray-100 mt-4">
+      <%= form.label :password, user.new_record? ? "Senha Inicial" : "Nova Senha (deixe em branco para manter a atual)", class: "block text-sm font-semibold text-gray-700" %>
+      <%= form.password_field :password, class: input_class, minlength: 6 %>
+    </div>
+  </div>
+
+  <div class="mt-8 flex justify-end gap-3 pt-4 border-t border-gray-100">
+    <%= link_to "Cancelar", admin_users_path, class: "bg-white py-2 px-4 border border-gray-300 rounded shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50" %>
+    <%= form.submit "Salvar Usuário", class: "bg-gray-900 py-2 px-4 border border-transparent rounded shadow-sm text-sm font-medium text-white hover:bg-gray-800 cursor-pointer" %>
+  </div>
+<% end %>

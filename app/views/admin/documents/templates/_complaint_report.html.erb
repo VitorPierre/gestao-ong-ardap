@@ -1,0 +1,22 @@
+<div style="font-family: Arial, sans-serif; background: #fff; padding: 20px;">
+  <h2 style="text-align: center; font-weight: bold; font-size: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 30px;">
+    RELATÓRIO OFICIAL DE INVESTIGAÇÃO (DENÚNCIA)
+  </h2>
+  <div style="line-height: 1.8; font-size: 14px;">
+    <p><strong>Referencia DEN-YYYY:</strong> <%= data[:"complaint_id"] %></p>
+    <p><strong>Averiguador(es):</strong> <%= data[:"investigator_name"] %></p>
+    <p><strong>Data da Blitz:</strong> <%= data[:"investigation_date"] %></p>
+    <p><strong>Evidências Constatadas In Loco:</strong> <%= data[:"findings"] %></p>
+    <p><strong>Desfecho Conclusivo das Equipes:</strong> <%= data[:"actions_taken"] %></p>
+    <p><strong>Sanções Finais e Sugestões:</strong> <%= data[:"conclusion"] %></p>
+  </div>
+  
+  <div style="margin-top: 100px; display: flex; justify-content: space-between; border-top: 1px dashed #ccc; padding-top: 20px;">
+    <div style="width: 48%; text-align: center;">
+      <p style="border-top: 1px solid #000; padding-top: 5px;">Atestador ARDAP<br><span style="font-size: 12px">Documento Digital</span></p>
+    </div>
+    <div style="width: 48%; text-align: center;">
+      <p style="border-top: 1px solid #000; padding-top: 5px;">Interveniente/Outorgado<br><span style="font-size: 12px">Assinatura no Verso ou Digital</span></p>
+    </div>
+  </div>
+</div>

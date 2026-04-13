@@ -1,0 +1,39 @@
+<% input_class = "block w-full rounded-md border border-gray-300 px-3 py-2 mt-1 shadow-sm text-sm focus:border-yellow-500 focus:outline-none" %>
+<% label_class = "block text-sm font-medium text-gray-700 mt-5" %>
+
+<%= form_with(model: [:admin, (@animal if @deworming_record.new_record?), @deworming_record].compact, class: "bg-white p-6 rounded-lg shadow border border-gray-200") do |form| %>
+  <% if @deworming_record.errors.any? %>
+    <div class="bg-red-50 text-red-700 px-4 py-3 rounded-md mb-5 border-l-4 border-red-500">
+      <ul class="list-disc ml-5 text-sm">
+        <% @deworming_record.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+    <div>
+      <%= form.label :product_name, "Nome do Produto", class: label_class %>
+      <%= form.text_field :product_name, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :administered_at, "Data de Aplicação", class: label_class %>
+      <%= form.date_field :administered_at, class: input_class %>
+    </div>
+    <div>
+      <%= form.label :next_due_at, "Próxima Dose", class: label_class %>
+      <%= form.date_field :next_due_at, class: input_class %>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <%= form.label :notes, "Observações", class: label_class %>
+    <%= form.text_area :notes, rows: 2, class: input_class %>
+  </div>
+
+  <div class="mt-6 flex items-center gap-4">
+    <%= form.submit "Salvar", class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2.5 px-5 rounded-md shadow transition cursor-pointer" %>
+    <%= link_to "Cancelar", admin_animal_path(@animal || @deworming_record.animal, tab: 'deworming'), class: "text-sm text-gray-500 hover:text-gray-700" %>
+  </div>
+<% end %>

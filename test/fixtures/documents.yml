@@ -1,9 +1,22 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+draft_doc:
+  title: Termo Rascunho
+  status: draft
+  category: terms
+  document_type: adoption_term
 
-one:
-  title: MyString
-  description: MyText
+generated_doc:
+  title: Termo Para Assinar
+  status: generated
+  category: terms
+  document_type: adoption_term
+  content: "HTML Congelado para assinatura"
 
-two:
-  title: MyString
-  description: MyText
+signed_doc:
+  title: Contrato Oficial Assinado
+  status: signed
+  is_locked: true
+  category: terms
+  document_type: adoption_term
+  content: "HTML oficial protegido"
+  hash_signature: "hash12345"
+  signed_at: <%= Time.current - 1.day %>
