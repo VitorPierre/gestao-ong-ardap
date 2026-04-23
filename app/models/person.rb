@@ -4,7 +4,7 @@ class Person < ApplicationRecord
   validates :name, presence: true, length: { maximum: 150 }
   validates :email, presence: true, uniqueness: true, strict_email: true, length: { maximum: 254 }, allow_blank: true
   validates :cpf, cpf: true, allow_blank: true, length: { maximum: 11 }
-  validates :rg, rg: true, allow_blank: true, length: { maximum: 20 }
+  validates :rg, rg: { use_state_as_uf: true }, allow_blank: true, length: { maximum: 20 }
   validates :phone, length: { maximum: 20 }, allow_blank: true
   validates :address, length: { maximum: 255 }, allow_blank: true
   validates :city, length: { maximum: 100 }, allow_blank: true

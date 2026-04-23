@@ -15,11 +15,13 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
     <div>
       <%= form.label :name, "Razão Social ou Nome Fantasia", class: label_class %>
-      <%= form.text_field :name, class: input_class, maxlength: 150 %>
+      <%= form.text_field :name, class: input_class, maxlength: 150, autocomplete: "organization" %>
+      <%= inline_errors_for(partner, :name) %>
     </div>
     <div>
       <%= form.label :document, "CNPJ / CPF", class: label_class %>
-      <%= form.text_field :document, class: input_class, maxlength: 18 %>
+      <%= form.text_field :document, class: input_class, maxlength: 18, autocomplete: "off" %>
+      <%= inline_errors_for(partner, :document) %>
     </div>
 
     <div>
@@ -38,15 +40,18 @@
 
     <div>
       <%= form.label :contact_name, "Nome do Responsável / Contato", class: label_class %>
-      <%= form.text_field :contact_name, class: input_class, maxlength: 120 %>
+      <%= form.text_field :contact_name, class: input_class, maxlength: 120, autocomplete: "name" %>
+      <%= inline_errors_for(partner, :contact_name) %>
     </div>
     <div>
       <%= form.label :phone, "Telefone Institucional", class: label_class %>
-      <%= form.text_field :phone, class: input_class, maxlength: 20, inputmode: "numeric", data: { controller: "mask", mask_type_value: "phone" } %>
+      <%= form.text_field :phone, class: input_class, maxlength: 20, inputmode: "numeric", autocomplete: "tel", data: { controller: "mask", mask_type_value: "phone" } %>
+      <%= inline_errors_for(partner, :phone) %>
     </div>
     <div>
       <%= form.label :email, "E-mail de Contato", class: label_class %>
-      <%= form.text_field :email, class: input_class, maxlength: 254 %>
+      <%= form.email_field :email, class: input_class, maxlength: 254, autocomplete: "email" %>
+      <%= inline_errors_for(partner, :email) %>
     </div>
     <div>
       <%= form.label :website, "Website Oficial", class: label_class %>
@@ -60,15 +65,18 @@
     
     <div class="md:col-span-2">
       <%= form.label :address, "Endereço Institucional", class: label_class %>
-      <%= form.text_field :address, class: input_class, maxlength: 255 %>
+      <%= form.text_field :address, class: input_class, maxlength: 255, autocomplete: "street-address" %>
+      <%= inline_errors_for(partner, :address) %>
     </div>
     <div>
       <%= form.label :city, "Cidade", class: label_class %>
-      <%= form.text_field :city, class: input_class, maxlength: 100 %>
+      <%= form.text_field :city, class: input_class, maxlength: 100, autocomplete: "address-level2" %>
+      <%= inline_errors_for(partner, :city) %>
     </div>
     <div>
       <%= form.label :state, "Estado (UF)", class: label_class %>
-      <%= form.text_field :state, class: input_class, maxlength: 2 %>
+      <%= form.text_field :state, class: input_class, maxlength: 2, autocomplete: "address-level1" %>
+      <%= inline_errors_for(partner, :state) %>
     </div>
 
     <div class="md:col-span-2 border-t mt-4 pt-2"></div>
@@ -79,7 +87,11 @@
     </div>
     <div class="md:col-span-2">
       <%= form.label :notes, "Notas Internas Sobre o Acordo", class: label_class %>
-      <%= form.text_area :notes, rows: 3, class: input_class, maxlength: 2000 %>
+      <div data-controller="character-counter">
+        <%= form.text_area :notes, rows: 3, class: input_class, maxlength: 2000, data: { character_counter_target: "input" } %>
+        <div data-character-counter-target="counter" class="text-xs text-right mt-1"></div>
+      </div>
+      <%= inline_errors_for(partner, :notes) %>
     </div>
   </div>
 

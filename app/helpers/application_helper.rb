@@ -16,4 +16,13 @@ module ApplicationHelper
       name
     end
   end
+
+  def inline_errors_for(object, field)
+    return unless object&.errors&.has_key?(field)
+
+    messages = object.errors.full_messages_for(field)
+    content_tag(:div, class: "text-red-500 text-xs mt-1 font-semibold") do
+      messages.join(", ")
+    end
+  end
 end

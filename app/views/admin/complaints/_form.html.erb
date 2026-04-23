@@ -25,7 +25,11 @@
     
     <div class="md:col-span-2">
       <%= form.label :description, "Descrição da Ocorrência", class: label_class %>
-      <%= form.text_area :description, rows: 4, class: input_class %>
+      <div data-controller="character-counter">
+        <%= form.text_area :description, rows: 4, class: input_class, maxlength: 3000, data: { character_counter_target: "input" } %>
+        <div data-character-counter-target="counter" class="text-xs text-right mt-1"></div>
+      </div>
+      <%= inline_errors_for(complaint, :description) %>
     </div>
 
     <!-- Seção: Localização -->
@@ -35,17 +39,20 @@
     
     <div class="md:col-span-2">
       <%= form.label :location_address, "Endereço Completo", class: label_class %>
-      <%= form.text_field :location_address, class: input_class %>
+      <%= form.text_field :location_address, class: input_class, maxlength: 255, autocomplete: "street-address" %>
+      <%= inline_errors_for(complaint, :location_address) %>
     </div>
 
     <div>
       <%= form.label :location_city, "Cidade", class: label_class %>
-      <%= form.text_field :location_city, class: input_class %>
+      <%= form.text_field :location_city, class: input_class, maxlength: 100, autocomplete: "address-level2" %>
+      <%= inline_errors_for(complaint, :location_city) %>
     </div>
 
     <div>
       <%= form.label :location_reference, "Ponto de Referência", class: label_class %>
-      <%= form.text_field :location_reference, class: input_class %>
+      <%= form.text_field :location_reference, class: input_class, maxlength: 255 %>
+      <%= inline_errors_for(complaint, :location_reference) %>
     </div>
 
     <!-- Seção: Controle Interno -->
@@ -60,7 +67,8 @@
 
     <div>
       <%= form.label :assigned_to, "Responsável/Equipe (Opcional)", class: label_class %>
-      <%= form.text_field :assigned_to, class: input_class, placeholder: "Nome do voluntário" %>
+      <%= form.text_field :assigned_to, class: input_class, placeholder: "Nome do voluntário", maxlength: 150 %>
+      <%= inline_errors_for(complaint, :assigned_to) %>
     </div>
     
     <div>
@@ -85,17 +93,23 @@
 
     <div class="complainant-fields">
       <%= form.label :complainant_name, "Nome", class: label_class %>
-      <%= form.text_field :complainant_name, class: input_class, id: "complainant-name" %>
+      <%= form.text_field :complainant_name, class: input_class, id: "complainant-name", maxlength: 150, autocomplete: "name" %>
+      <%= inline_errors_for(complaint, :complainant_name) %>
     </div>
 
     <div class="complainant-fields">
       <%= form.label :complainant_phone, "Telefone", class: label_class %>
-      <%= form.text_field :complainant_phone, class: input_class, id: "complainant-phone" %>
+      <%= form.text_field :complainant_phone, class: input_class, id: "complainant-phone", maxlength: 20, inputmode: "numeric", autocomplete: "tel", data: { controller: "mask", mask_type_value: "phone" } %>
+      <%= inline_errors_for(complaint, :complainant_phone) %>
     </div>
 
     <div class="md:col-span-2 mt-4">
       <%= form.label :notes, "Notas Internas (Não visível em relatórios públicos)", class: label_class %>
-      <%= form.text_area :notes, rows: 2, class: input_class %>
+      <div data-controller="character-counter">
+        <%= form.text_area :notes, rows: 2, class: input_class, maxlength: 2000, data: { character_counter_target: "input" } %>
+        <div data-character-counter-target="counter" class="text-xs text-right mt-1"></div>
+      </div>
+      <%= inline_errors_for(complaint, :notes) %>
     </div>
   </div>
 

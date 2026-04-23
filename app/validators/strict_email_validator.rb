@@ -32,7 +32,7 @@ class StrictEmailValidator < ActiveModel::EachValidator
 
     # 3. Validação de MX (capacidade real de recebimento)
     # Ignoramos a validação de MX em ambiente de testes para não deixar a suíte lenta ou dependente de internet
-    unless Rails.env.test? || mx_records_exist?(domain)
+    unless (Rails.env.test? && !options[:force_mx_test]) || mx_records_exist?(domain)
       record.errors.add(attribute, "possui um domínio que não pode receber e-mails (sem registros MX).")
     end
   end

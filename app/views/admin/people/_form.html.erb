@@ -17,23 +17,28 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
     <div>
       <%= form.label :name, "Nome Completo", class: label_class %>
-      <%= form.text_field :name, class: input_class, placeholder: "Ex: João da Silva", maxlength: 150 %>
+      <%= form.text_field :name, class: input_class, placeholder: "Ex: João da Silva", maxlength: 150, autocomplete: "name" %>
+      <%= inline_errors_for(person, :name) %>
     </div>
     <div>
       <%= form.label :email, "E-mail", class: label_class %>
-      <%= form.email_field :email, class: input_class, placeholder: "email@exemplo.com", maxlength: 254 %>
+      <%= form.email_field :email, class: input_class, placeholder: "email@exemplo.com", maxlength: 254, autocomplete: "email" %>
+      <%= inline_errors_for(person, :email) %>
     </div>
     <div>
       <%= form.label :phone, "Telefone / WhatsApp", class: label_class %>
-      <%= form.text_field :phone, class: input_class, placeholder: "(11) 99999-9999", maxlength: 20, inputmode: "numeric", data: { controller: "mask", mask_type_value: "phone" } %>
+      <%= form.text_field :phone, class: input_class, placeholder: "(11) 99999-9999", maxlength: 20, inputmode: "numeric", autocomplete: "tel", data: { controller: "mask", mask_type_value: "phone" } %>
+      <%= inline_errors_for(person, :phone) %>
     </div>
     <div>
       <%= form.label :cpf, "CPF", class: label_class %>
-      <%= form.text_field :cpf, class: input_class, placeholder: "000.000.000-00", maxlength: 14, inputmode: "numeric", data: { controller: "mask", mask_type_value: "cpf" } %>
+      <%= form.text_field :cpf, class: input_class, placeholder: "000.000.000-00", maxlength: 14, inputmode: "numeric", autocomplete: "off", data: { controller: "mask", mask_type_value: "cpf" } %>
+      <%= inline_errors_for(person, :cpf) %>
     </div>
     <div>
       <%= form.label :rg, "RG", class: label_class %>
-      <%= form.text_field :rg, class: input_class, maxlength: 20 %>
+      <%= form.text_field :rg, class: input_class, maxlength: 20, autocomplete: "off" %>
+      <%= inline_errors_for(person, :rg) %>
     </div>
     <div>
       <%= form.label :relationship_type, "Tipo de Relacionamento", class: label_class %>
@@ -41,18 +46,22 @@
           [["Adotante", "adoptee"], ["Tutor Temporário", "foster"], ["Voluntário", "volunteer"], ["Doador", "donor"], ["Outro", "other"]],
           { include_blank: "Selecione..." },
           class: input_class %>
+      <%= inline_errors_for(person, :relationship_type) %>
     </div>
     <div>
       <%= form.label :address, "Endereço", class: label_class %>
-      <%= form.text_field :address, class: input_class, placeholder: "Rua, número, bairro", maxlength: 255 %>
+      <%= form.text_field :address, class: input_class, placeholder: "Rua, número, bairro", maxlength: 255, autocomplete: "street-address" %>
+      <%= inline_errors_for(person, :address) %>
     </div>
     <div>
       <%= form.label :city, "Cidade", class: label_class %>
-      <%= form.text_field :city, class: input_class, maxlength: 100 %>
+      <%= form.text_field :city, class: input_class, maxlength: 100, autocomplete: "address-level2" %>
+      <%= inline_errors_for(person, :city) %>
     </div>
     <div>
       <%= form.label :state, "Estado (UF)", class: label_class %>
-      <%= form.text_field :state, class: input_class, placeholder: "SP", maxlength: 2 %>
+      <%= form.text_field :state, class: input_class, placeholder: "SP", maxlength: 2, autocomplete: "address-level1" %>
+      <%= inline_errors_for(person, :state) %>
     </div>
   </div>
 

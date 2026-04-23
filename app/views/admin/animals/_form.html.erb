@@ -16,7 +16,8 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
     <div>
       <%= form.label :name, "Nome do Animal", class: label_class %>
-      <%= form.text_field :name, class: input_class, placeholder: "Ex: Rex" %>
+      <%= form.text_field :name, class: input_class, placeholder: "Ex: Rex", maxlength: 100 %>
+      <%= inline_errors_for(animal, :name) %>
     </div>
     <div>
       <%= form.label :species, "Espécie", class: label_class %>
@@ -41,15 +42,18 @@
     </div>
     <div>
       <%= form.label :breed, "Raça", class: label_class %>
-      <%= form.text_field :breed, class: input_class, placeholder: "Ex: SRD, Labrador..." %>
+      <%= form.text_field :breed, class: input_class, placeholder: "Ex: SRD, Labrador...", maxlength: 100 %>
+      <%= inline_errors_for(animal, :breed) %>
     </div>
     <div>
       <%= form.label :color, "Cor / Pelagem", class: label_class %>
-      <%= form.text_field :color, class: input_class, placeholder: "Ex: Caramelo, Preto e branco..." %>
+      <%= form.text_field :color, class: input_class, placeholder: "Ex: Caramelo, Preto e branco...", maxlength: 50 %>
+      <%= inline_errors_for(animal, :color) %>
     </div>
     <div>
       <%= form.label :approximate_age, "Idade Aproximada", class: label_class %>
-      <%= form.text_field :approximate_age, class: input_class, placeholder: "Ex: 2 anos, 6 meses..." %>
+      <%= form.text_field :approximate_age, class: input_class, placeholder: "Ex: 2 anos, 6 meses...", maxlength: 50 %>
+      <%= inline_errors_for(animal, :approximate_age) %>
     </div>
     <div>
       <%= form.label :weight, "Peso (kg)", class: label_class %>
@@ -81,7 +85,11 @@
 
   <div class="mt-5">
     <%= form.label :notes, "Observações", class: label_class %>
-    <%= form.text_area :notes, rows: 4, class: input_class, placeholder: "Comportamento, histórico, necessidades especiais..." %>
+    <div data-controller="character-counter">
+      <%= form.text_area :notes, rows: 4, class: input_class, placeholder: "Comportamento, histórico, necessidades especiais...", maxlength: 2000, data: { character_counter_target: "input" } %>
+      <div data-character-counter-target="counter" class="text-xs text-right mt-1"></div>
+    </div>
+    <%= inline_errors_for(animal, :notes) %>
   </div>
 
   <div class="mt-6 flex items-center gap-4">
