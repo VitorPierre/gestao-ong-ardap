@@ -1,8 +1,7 @@
 class DocumentParticipant < ApplicationRecord
-  belongs_to :document
+  include NormalizesDocuments
 
-  validates :full_name, presence: true
-  validates :role_in_document, presence: true
+  belongs_to :document
 
   enum :document_kind, {
     cpf: 0,
@@ -27,4 +26,29 @@ class DocumentParticipant < ApplicationRecord
     individual: 0,
     organization: 1
   }
+
+  validates :full_name, presence: true, length: { maximum: 150 }
+  validates :role_in_document, presence: true
+  validates :email, strict_email: true, length: { maximum: 254 }, allow_blank: true
+  validates :phone, length: { maximum: 20 }, allow_blank: true
+  validates :address, length: { maximum: 255 }, allow_blank: true
+  validates :notes, length: { maximum: 1000 }, allow_blank: true
+  validates :document_number, length: { maximum: 20 }, allow_blank: true
+
+  validate :validate_contextual_document
+
+  private
+
+  def validate_contextual_document
+    return if document_number.blank?
+    
+    case document_kind
+    when 'cpf'
+      errors.add(:document_number, "não é um CPF válido") unless CpfValidator.new(attributes: [:document_number]).send(:cpf_valid?, document_number)
+    when 'cnpj'
+      errors.add(:document_number, "não é um CNPJ válido") unless CnpjValidator.new(attributes: [:document_number]).send(:cnpj_valid?, document_number)
+    when 'rg'
+      errors.add(:document_number, "não é um RG válido") unless RgValidator.new(attributes: [:document_number]).send(:rg_valid?, document_number)
+    end
+  end
 end

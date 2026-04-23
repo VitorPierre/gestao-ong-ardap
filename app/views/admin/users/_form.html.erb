@@ -14,12 +14,12 @@
   <div class="space-y-4">
     <div>
       <%= form.label :name, "Nome Completo", class: "block text-sm font-semibold text-gray-700" %>
-      <%= form.text_field :name, class: input_class %>
+      <%= form.text_field :name, class: input_class, maxlength: 120 %>
     </div>
 
     <div>
       <%= form.label :email, "E-mail (usado para Login)", class: "block text-sm font-semibold text-gray-700" %>
-      <%= form.email_field :email, class: input_class %>
+      <%= form.email_field :email, class: input_class, maxlength: 254 %>
     </div>
     
     <div>

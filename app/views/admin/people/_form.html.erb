@@ -17,23 +17,23 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
     <div>
       <%= form.label :name, "Nome Completo", class: label_class %>
-      <%= form.text_field :name, class: input_class, placeholder: "Ex: João da Silva" %>
+      <%= form.text_field :name, class: input_class, placeholder: "Ex: João da Silva", maxlength: 150 %>
     </div>
     <div>
       <%= form.label :email, "E-mail", class: label_class %>
-      <%= form.email_field :email, class: input_class, placeholder: "email@exemplo.com" %>
+      <%= form.email_field :email, class: input_class, placeholder: "email@exemplo.com", maxlength: 254 %>
     </div>
     <div>
       <%= form.label :phone, "Telefone / WhatsApp", class: label_class %>
-      <%= form.text_field :phone, class: input_class, placeholder: "(11) 99999-9999" %>
+      <%= form.text_field :phone, class: input_class, placeholder: "(11) 99999-9999", maxlength: 20, inputmode: "numeric", data: { controller: "mask", mask_type_value: "phone" } %>
     </div>
     <div>
       <%= form.label :cpf, "CPF", class: label_class %>
-      <%= form.text_field :cpf, class: input_class, placeholder: "000.000.000-00" %>
+      <%= form.text_field :cpf, class: input_class, placeholder: "000.000.000-00", maxlength: 14, inputmode: "numeric", data: { controller: "mask", mask_type_value: "cpf" } %>
     </div>
     <div>
       <%= form.label :rg, "RG", class: label_class %>
-      <%= form.text_field :rg, class: input_class %>
+      <%= form.text_field :rg, class: input_class, maxlength: 20 %>
     </div>
     <div>
       <%= form.label :relationship_type, "Tipo de Relacionamento", class: label_class %>
@@ -44,11 +44,11 @@
     </div>
     <div>
       <%= form.label :address, "Endereço", class: label_class %>
-      <%= form.text_field :address, class: input_class, placeholder: "Rua, número, bairro" %>
+      <%= form.text_field :address, class: input_class, placeholder: "Rua, número, bairro", maxlength: 255 %>
     </div>
     <div>
       <%= form.label :city, "Cidade", class: label_class %>
-      <%= form.text_field :city, class: input_class %>
+      <%= form.text_field :city, class: input_class, maxlength: 100 %>
     </div>
     <div>
       <%= form.label :state, "Estado (UF)", class: label_class %>

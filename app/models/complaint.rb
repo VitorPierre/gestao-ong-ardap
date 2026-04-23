@@ -27,6 +27,11 @@ class Complaint < ApplicationRecord
   }
 
   validates :description, presence: true
+  validates :protocol_number, presence: true, uniqueness: true, length: { maximum: 50 }
+  validates :complainant_name, length: { maximum: 150 }, allow_blank: true
+  validates :complainant_phone, length: { maximum: 20 }, allow_blank: true
+  validates :location_address, length: { maximum: 255 }, allow_blank: true
+  validates :location_city, length: { maximum: 100 }, allow_blank: true
   validates :received_at, presence: true
   validates :complainant_name, presence: true, unless: :anonymous?
   validates :complainant_phone, presence: true, unless: :anonymous?

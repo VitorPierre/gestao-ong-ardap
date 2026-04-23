@@ -15,11 +15,11 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
     <div>
       <%= form.label :name, "Razão Social ou Nome Fantasia", class: label_class %>
-      <%= form.text_field :name, class: input_class %>
+      <%= form.text_field :name, class: input_class, maxlength: 150 %>
     </div>
     <div>
       <%= form.label :document, "CNPJ / CPF", class: label_class %>
-      <%= form.text_field :document, class: input_class %>
+      <%= form.text_field :document, class: input_class, maxlength: 18 %>
     </div>
 
     <div>
@@ -38,15 +38,15 @@
 
     <div>
       <%= form.label :contact_name, "Nome do Responsável / Contato", class: label_class %>
-      <%= form.text_field :contact_name, class: input_class %>
+      <%= form.text_field :contact_name, class: input_class, maxlength: 120 %>
     </div>
     <div>
       <%= form.label :phone, "Telefone Institucional", class: label_class %>
-      <%= form.text_field :phone, class: input_class %>
+      <%= form.text_field :phone, class: input_class, maxlength: 20, inputmode: "numeric", data: { controller: "mask", mask_type_value: "phone" } %>
     </div>
     <div>
       <%= form.label :email, "E-mail de Contato", class: label_class %>
-      <%= form.text_field :email, class: input_class %>
+      <%= form.text_field :email, class: input_class, maxlength: 254 %>
     </div>
     <div>
       <%= form.label :website, "Website Oficial", class: label_class %>
@@ -60,15 +60,15 @@
     
     <div class="md:col-span-2">
       <%= form.label :address, "Endereço Institucional", class: label_class %>
-      <%= form.text_field :address, class: input_class %>
+      <%= form.text_field :address, class: input_class, maxlength: 255 %>
     </div>
     <div>
       <%= form.label :city, "Cidade", class: label_class %>
-      <%= form.text_field :city, class: input_class %>
+      <%= form.text_field :city, class: input_class, maxlength: 100 %>
     </div>
     <div>
       <%= form.label :state, "Estado (UF)", class: label_class %>
-      <%= form.text_field :state, class: input_class %>
+      <%= form.text_field :state, class: input_class, maxlength: 2 %>
     </div>
 
     <div class="md:col-span-2 border-t mt-4 pt-2"></div>
@@ -79,7 +79,7 @@
     </div>
     <div class="md:col-span-2">
       <%= form.label :notes, "Notas Internas Sobre o Acordo", class: label_class %>
-      <%= form.text_area :notes, rows: 3, class: input_class %>
+      <%= form.text_area :notes, rows: 3, class: input_class, maxlength: 2000 %>
     </div>
   </div>
 
