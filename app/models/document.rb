@@ -10,7 +10,11 @@ class Document < ApplicationRecord
   
   belongs_to :linked, polymorphic: true, optional: true
   belongs_to :signed_by_user, class_name: "User", optional: true
+  belongs_to :creator_user, class_name: "User", optional: true
   
+  has_many :document_participants, dependent: :destroy
+  accepts_nested_attributes_for :document_participants, allow_destroy: true
+
   has_many :people, through: :document_links, source: :documentable, source_type: 'Person'
   has_many :animals, through: :document_links, source: :documentable, source_type: 'Animal'
   has_many :adoptions, through: :document_links, source: :documentable, source_type: 'Adoption'
@@ -51,6 +55,8 @@ class Document < ApplicationRecord
   }
 
   validates :title, presence: true
+  validates :creator_user, presence: true, on: :create
+  validates :document_participants, presence: true, on: :create
 
   scope :by_category, ->(cat) { where(category: cat) }
   scope :signed, -> { where(status: "signed") }
@@ -58,14 +64,6 @@ class Document < ApplicationRecord
   scope :draft, -> { where(status: "draft") }
 
   validate :readonly_if_locked, on: :update
-
-  private
-
-  def readonly_if_locked
-    if is_locked_was && (content_changed? || hash_signature_changed? || signer_name_changed?)
-      errors.add(:base, "Documento bloqueado após assinatura eletrônica e não pode ser alterado.")
-    end
-  end
 
   def signature_stamp
     return nil unless signed? && document_signature.present?
@@ -77,5 +75,13 @@ class Document < ApplicationRecord
       "Hash SHA256: #{document_signature.content_hash[0..15]}...",
       "Assinado via sistema administrativo da ONG ARDAP"
     ]
+  end
+
+  private
+
+  def readonly_if_locked
+    if is_locked_was && (content_changed? || hash_signature_changed? || signer_name_changed?)
+      errors.add(:base, "Documento bloqueado após assinatura eletrônica e não pode ser alterado.")
+    end
   end
 end

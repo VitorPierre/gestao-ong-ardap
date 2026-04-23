@@ -82,6 +82,76 @@
   </div>
 </div>
 
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+  <h3 class="text-lg leading-6 font-medium text-gray-900 border-b pb-2 mb-4">Usuário Criador</h3>
+  <% if @document.creator_user.present? %>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div>
+        <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Nome</p>
+        <p class="text-sm text-gray-900"><%= @document.creator_user.name %></p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">E-mail</p>
+        <p class="text-sm text-gray-900"><%= @document.creator_user.email %></p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Perfil</p>
+        <p class="text-sm text-gray-900"><%= @document.creator_user.role&.humanize %></p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Data de Criação</p>
+        <p class="text-sm text-gray-900"><%= @document.created_at.strftime('%d/%m/%Y às %H:%M') %></p>
+      </div>
+    </div>
+  <% else %>
+    <p class="text-sm text-gray-500 italic">Informação não disponível (Documento Legado).</p>
+  <% end %>
+</div>
+
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+  <h3 class="text-lg leading-6 font-medium text-gray-900 border-b pb-2 mb-4">Participantes Externos Envolvidos</h3>
+  <% if @document.document_participants.any? %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Papel</th>
+            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome Completo</th>
+            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Documento</th>
+            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contato</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% @document.document_participants.each do |participant| %>
+            <tr>
+              <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900">
+                <%= participant.role_in_document&.humanize || 'Não especificado' %>
+              </td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                <%= participant.full_name %>
+                <span class="block text-xs text-gray-400"><%= participant.external_type&.humanize %></span>
+              </td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                <%= participant.document_kind&.upcase %>: <%= participant.document_number.presence || '—' %>
+              </td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                <div class="flex flex-col">
+                  <% if participant.phone.present? %><span>📞 <%= participant.phone %></span><% end %>
+                  <% if participant.email.present? %><span>✉️ <%= participant.email %></span><% end %>
+                  <% if participant.phone.blank? && participant.email.blank? %><span class="text-gray-400">—</span><% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p class="text-sm text-gray-500 italic">Nenhum participante externo registrado.</p>
+  <% end %>
+</div>
+
+
 <% if @document.content.present? %>
   <h3 class="text-xl font-bold mb-4">Pré-visualização do Documento Impresso</h3>
   <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200" style="max-width: 800px; margin: 0 auto;">

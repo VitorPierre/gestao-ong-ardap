@@ -1,0 +1,56 @@
+<div class="nested-fields bg-white border border-gray-200 shadow-sm p-4 rounded-md relative mb-4">
+  <%= f.hidden_field :_destroy %>
+  
+  <div class="absolute top-2 right-2">
+    <button type="button" data-action="nested-form#remove_association" class="text-red-500 hover:text-red-700 text-sm font-medium">
+      Remover
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="md:col-span-2">
+      <%= f.label :full_name, "Nome Completo", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :full_name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm px-3 py-2 border" %>
+    </div>
+
+    <div>
+      <%= f.label :role_in_document, "Papel no Documento", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.select :role_in_document, DocumentParticipant.role_in_documents.keys.map { |r| [r.humanize, r] }, { include_blank: "Selecione..." }, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm px-3 py-2 border" %>
+    </div>
+
+    <div>
+      <%= f.label :external_type, "Tipo de Pessoa", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.select :external_type, DocumentParticipant.external_types.keys.map { |e| [e.humanize, e] }, {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm px-3 py-2 border" %>
+    </div>
+
+    <div>
+      <%= f.label :document_kind, "Tipo de Documento", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.select :document_kind, DocumentParticipant.document_kinds.keys.map { |k| [k.humanize, k] }, { include_blank: "Selecione..." }, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm px-3 py-2 border" %>
+    </div>
+
+    <div>
+      <%= f.label :document_number, "Número do Documento", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :document_number, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm px-3 py-2 border" %>
+    </div>
+
+    <div>
+      <%= f.label :phone, "Telefone", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :phone, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm px-3 py-2 border" %>
+    </div>
+
+    <div>
+      <%= f.label :email, "E-mail", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.email_field :email, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm px-3 py-2 border" %>
+    </div>
+
+    <div class="md:col-span-2">
+      <%= f.label :address, "Endereço Completo", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :address, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm px-3 py-2 border" %>
+    </div>
+
+    <div class="md:col-span-2">
+      <%= f.label :notes, "Observações (Opcional)", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_area :notes, rows: 2, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm px-3 py-2 border" %>
+    </div>
+  </div>
+</div>

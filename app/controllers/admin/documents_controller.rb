@@ -56,6 +56,7 @@ class Admin::DocumentsController < Admin::BaseController
         linked_id: params[:linked_id],
         linked_type: params[:linked_type]
       )
+      @document.document_participants.build
     end
   end
 
@@ -66,6 +67,7 @@ class Admin::DocumentsController < Admin::BaseController
   # POST /admin/documents or /admin/documents.json
   def create
     @document = Document.new(document_params)
+    @document.creator_user = current_user
 
     if @document.document_type.present? && params[:document_data].present?
       begin
@@ -124,7 +126,12 @@ class Admin::DocumentsController < Admin::BaseController
     def document_params
       params.require(:document).permit(
         :title, :description, :file, :document_type, :category,
-        :status, :content, :linked_type, :linked_id
+        :status, :content, :linked_type, :linked_id,
+        document_participants_attributes: [
+          :id, :full_name, :document_number, :document_kind,
+          :phone, :email, :address, :role_in_document,
+          :external_type, :notes, :_destroy
+        ]
       )
     end
 end

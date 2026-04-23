@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  document: one
+  full_name: MyString
+  document_number: MyString
+  document_kind: 1
+  phone: MyString
+  email: MyString
+  address: MyString
+  role_in_document: 1
+  external_type: 1
+  notes: MyText
+  signed: false
+
+two:
+  document: two
+  full_name: MyString
+  document_number: MyString
+  document_kind: 1
+  phone: MyString
+  email: MyString
+  address: MyString
+  role_in_document: 1
+  external_type: 1
+  notes: MyText
+  signed: false

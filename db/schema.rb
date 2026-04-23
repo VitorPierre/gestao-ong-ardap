@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_13_190200) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_23_185727) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -144,6 +144,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_190200) do
     t.index ["documentable_type", "documentable_id"], name: "index_document_links_on_documentable"
   end
 
+  create_table "document_participants", force: :cascade do |t|
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.bigint "document_id", null: false
+    t.integer "document_kind"
+    t.string "document_number"
+    t.string "email"
+    t.integer "external_type"
+    t.string "full_name"
+    t.text "notes"
+    t.string "phone"
+    t.integer "role_in_document"
+    t.boolean "signed", default: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_document_participants_on_document_id"
+  end
+
   create_table "document_signatures", force: :cascade do |t|
     t.boolean "accepted_terms", default: true, null: false
     t.string "content_hash"
@@ -162,6 +179,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_190200) do
     t.string "category"
     t.text "content"
     t.datetime "created_at", null: false
+    t.bigint "creator_user_id"
     t.text "description"
     t.string "document_type"
     t.datetime "generated_at"
@@ -177,6 +195,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_190200) do
     t.string "status", default: "draft"
     t.string "title"
     t.datetime "updated_at", null: false
+    t.index ["creator_user_id"], name: "index_documents_on_creator_user_id"
     t.index ["linked_type", "linked_id"], name: "index_documents_on_linked_type_and_linked_id"
   end
 
@@ -327,6 +346,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_190200) do
   add_foreign_key "complaints", "animals"
   add_foreign_key "deworming_records", "animals"
   add_foreign_key "document_links", "documents"
+  add_foreign_key "document_participants", "documents"
   add_foreign_key "document_signatures", "documents"
   add_foreign_key "document_signatures", "users"
   add_foreign_key "donations", "partners"
