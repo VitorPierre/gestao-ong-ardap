@@ -38,7 +38,8 @@ class Admin::DocumentsController < Admin::BaseController
     if @document.file.attached? && @document.signed? && !params[:force_preview]
       redirect_to rails_blob_path(@document.file, disposition: "attachment")
     else
-      render pdf: "Documento_#{@document.id}",
+      filename = "#{@document.document_type.present? ? @document.document_type.dasherize : 'documento'}-#{@document.id}"
+      render pdf: filename,
              template: "admin/documents/pdf_export",
              layout: "pdf",
              formats: [:html]

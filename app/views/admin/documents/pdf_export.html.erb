@@ -1,1 +1,68 @@
-<%= raw @document.content %>
+<div style="margin-bottom: 30px; text-align: center;">
+  <h2 style="font-size: 18px; font-weight: bold; text-transform: uppercase; margin: 0 0 5px 0;">
+    <%= @document.title %>
+  </h2>
+  <p style="font-size: 12px; color: #555; margin: 0;">
+    Gerado em <%= Time.current.strftime('%d/%m/%Y às %H:%M') %>
+  </p>
+</div>
+
+<div class="document-body" style="margin-bottom: 40px; text-align: justify; font-size: 14px; line-height: 1.6;">
+  <%= raw @document.content %>
+</div>
+
+<div style="page-break-inside: avoid; border-top: 2px solid #000; padding-top: 20px; margin-top: 50px;">
+  <h3 style="font-size: 14px; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 10px; text-transform: uppercase;">
+    Participantes Externos Envolvidos
+  </h3>
+  
+  <% if @document.document_participants.any? %>
+    <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 20px;">
+      <thead>
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 6px; background: #f9f9f9; text-align: left;">Nome / Razão Social</th>
+          <th style="border: 1px solid #ddd; padding: 6px; background: #f9f9f9; text-align: left;">Papel</th>
+          <th style="border: 1px solid #ddd; padding: 6px; background: #f9f9f9; text-align: left;">Documento</th>
+          <th style="border: 1px solid #ddd; padding: 6px; background: #f9f9f9; text-align: left;">Contato / Endereço</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @document.document_participants.each do |participant| %>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 6px; vertical-align: top;">
+              <strong><%= participant.full_name %></strong><br>
+              <span style="color: #666; font-size: 10px;"><%= participant.external_type&.humanize %></span>
+            </td>
+            <td style="border: 1px solid #ddd; padding: 6px; vertical-align: top;"><%= participant.role_in_document&.humanize || 'N/A' %></td>
+            <td style="border: 1px solid #ddd; padding: 6px; vertical-align: top;"><%= participant.document_kind&.upcase %>: <%= participant.document_number.presence || '—' %></td>
+            <td style="border: 1px solid #ddd; padding: 6px; vertical-align: top;">
+              <% if participant.phone.present? %>Tel: <%= participant.phone %><br><% end %>
+              <% if participant.email.present? %>E-mail: <%= participant.email %><br><% end %>
+              <% if participant.address.present? %>Endereço: <%= participant.address %><% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p style="font-size: 12px; font-style: italic; color: #666;">Nenhum participante externo registrado estruturalmente.</p>
+  <% end %>
+
+  <h3 style="font-size: 14px; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 10px; margin-top: 20px; text-transform: uppercase;">
+    Responsável Interno (Criador)
+  </h3>
+  <% if @document.creator_user.present? %>
+    <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 20px;">
+      <tr>
+        <td style="padding: 4px 0;"><strong>Nome:</strong> <%= @document.creator_user.name %></td>
+        <td style="padding: 4px 0;"><strong>E-mail:</strong> <%= @document.creator_user.email %></td>
+      </tr>
+      <tr>
+        <td style="padding: 4px 0;"><strong>Perfil Administrativo:</strong> <%= @document.creator_user.role&.humanize %></td>
+        <td style="padding: 4px 0;"><strong>Data de Registro Sistêmico:</strong> <%= @document.created_at.strftime('%d/%m/%Y às %H:%M:%S') %></td>
+      </tr>
+    </table>
+  <% else %>
+    <p style="font-size: 12px; font-style: italic; color: #666;">Usuário não registrado estruturalmente.</p>
+  <% end %>
+</div>
