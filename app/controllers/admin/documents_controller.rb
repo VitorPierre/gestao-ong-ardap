@@ -8,6 +8,7 @@ class Admin::DocumentsController < Admin::BaseController
     query = query.where(category: params[:category]) if params[:category].present?
     query = query.where(document_type: params[:type]) if params[:type].present?
     query = query.where(status: params[:status]) if params[:status].present?
+    query = query.where(creator_user_id: params[:creator_id]) if params[:creator_id].present?
 
     @grouped_documents = query.group_by(&:category)
   end
@@ -35,6 +36,7 @@ class Admin::DocumentsController < Admin::BaseController
   end
 
   def generate_pdf
+    audit!('export_pdf', @document)
     if @document.file.attached? && @document.signed? && !params[:force_preview]
       redirect_to rails_blob_path(@document.file, disposition: "attachment")
     else
@@ -85,6 +87,7 @@ class Admin::DocumentsController < Admin::BaseController
 
     respond_to do |format|
       if @document.save
+        audit!('create', @document)
         format.html { redirect_to [:admin, @document], notice: "Documento foi criado com sucesso." }
         format.json { render :show, status: :created, location: @document }
       else
@@ -98,6 +101,7 @@ class Admin::DocumentsController < Admin::BaseController
   def update
     respond_to do |format|
       if @document.update(document_params)
+        audit!('update', @document)
         format.html { redirect_to [:admin, @document], notice: "Documento atualizado com sucesso.", status: :see_other }
         format.json { render :show, status: :ok, location: @document }
       else

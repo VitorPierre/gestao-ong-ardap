@@ -80,8 +80,11 @@ class Document < ApplicationRecord
   private
 
   def readonly_if_locked
-    if is_locked_was && (content_changed? || hash_signature_changed? || signer_name_changed?)
-      errors.add(:base, "Documento bloqueado após assinatura eletrônica e não pode ser alterado.")
+    if (is_locked_was || signed?) && (changed? || document_participants.any? { |p| p.changed? || p.new_record? || p.marked_for_destruction? })
+      # Always allow status updates like cancel or is_locked updates
+      unless changes.keys - ['status', 'is_locked', 'updated_at'] == []
+        errors.add(:base, "Documento bloqueado após geração/assinatura eletrônica e não pode ser alterado.")
+      end
     end
   end
 end
