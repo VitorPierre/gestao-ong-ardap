@@ -1,0 +1,5 @@
+pt-BR:
+  errors:
+    messages:
+      # Sobrescrita de mensagens padrão do rails-i18n se necessário
+      # invalid_cpf: "não é um CPF válido"

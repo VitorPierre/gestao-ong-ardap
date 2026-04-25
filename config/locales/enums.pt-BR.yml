@@ -1,0 +1,9 @@
+pt-BR:
+  activerecord:
+    attributes:
+      # Exemplo:
+      # animal:
+      #   species:
+      #     dog: "Cachorro"
+      #     cat: "Gato"
+      #     other: "Outro"

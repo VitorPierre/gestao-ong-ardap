@@ -1,0 +1,6 @@
+pt-BR:
+  admin:
+    # Exemplo de namespace de view
+    # animals:
+    #   index:
+    #     title: "Animais"

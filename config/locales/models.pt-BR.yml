@@ -1,0 +1,9 @@
+pt-BR:
+  activerecord:
+    models:
+      # Exemplo:
+      # animal: "Animal"
+    attributes:
+      # Exemplo:
+      # animal:
+      #   name: "Nome"

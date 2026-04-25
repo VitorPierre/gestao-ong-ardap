@@ -1,0 +1,14 @@
+pt-BR:
+  hello: "Olá mundo"
+  actions:
+    new: "Novo"
+    edit: "Editar"
+    show: "Ver"
+    destroy: "Excluir"
+    save: "Salvar"
+    back: "Voltar"
+    cancel: "Cancelar"
+    confirm_destroy: "Tem certeza?"
+  messages:
+    empty: "Nenhum registro encontrado."
+    confirm: "Tem certeza?"
